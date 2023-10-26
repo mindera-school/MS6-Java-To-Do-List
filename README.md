@@ -16,6 +16,10 @@ A simple Java program to manage a basic todo list.
 - **Remove all tasks set as done:** Clear the list of all completed tasks.
 - **Recover removed tasks:** Restore previously deleted tasks.
 - **Exit the program:** Gracefully terminate the application.
+- **Task Count Display:** Show the total number of tasks currently in the list for better task management.
+- **Simple Task Notes:** Allow users to add short notes or descriptions to individual tasks for additional context or details.
+- **Task Completion Percentage:** Display a percentage to show the overall completion progress of the tasks in the list.
+- **Time Stamps:** Include timestamps for task creation and modification to track the history of each task or when created and deleted.
 
 ## How to Run
 
