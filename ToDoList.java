@@ -86,8 +86,8 @@ public class ToDoList {
                     break;
                 //////   V.2    //////
                 case 9:
-
-
+                    deleteAllDone();
+                    break;
                 case 0:
                     System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
                     break;
@@ -265,7 +265,7 @@ public class ToDoList {
         Collections.sort(tarefas, new Comparator<Tarefa>() {
             @Override
             public int compare(Tarefa abc1, Tarefa abc2) {
-                return Boolean.compare(abc2.done,abc1.done);
+                return Boolean.compare(abc2.done, abc1.done);
             }
         });
     }
@@ -293,6 +293,14 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;11mYour plan is already setted to Premium! You don't need to buy it again.\u001b[0m");
         }
         return premium;
+    }
+
+    public static void deleteAllDone() {
+        for (int i = 0; i < tarefas.size(); i++) {
+            if (tarefas.get(i).done) {
+                tarefas.get(i).deleted = true;
+            }
+        }
     }
 
 }
