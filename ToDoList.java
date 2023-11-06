@@ -39,7 +39,8 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
             System.out.println("\u001b[38;5;15m7 - Organize alphabetically\u001b[0m");
             System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
-            System.out.println("\u001b[38;5;15m9 - Organize by done and undone\u001b[0m");
+            System.out.println("\u001b[38;5;15m9 - Organize by completed and uncompleted\u001b[0m");
+            System.out.println("\u001b[38;5;15m10 - Remove all tasks set as completed\u001b[0m");
             System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
             userChoice = scan.next();
 
@@ -86,6 +87,9 @@ public class ToDoList {
                     break;
                 case "9":
                     organizeByDoneAndUndone(toDoList);
+                    break;
+                case "10":
+                    removeAllTasksSetAsCompleted(toDoList);
                     break;
                 case "0":
                     System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
@@ -335,6 +339,23 @@ public class ToDoList {
                     counter++;
                 }
             }
+        }
+    }
+
+    public static void removeAllTasksSetAsCompleted(String[] toDoList){
+        int counter=0;
+        for(int i=0; i< toDoList.length;i++){
+            if(toDoList[i] != null){
+                if(toDoList[i].contains(" ✅")){
+                    toDoList[i]=null;
+                    counter++;
+                }
+            }
+        }
+        if(counter<1){
+            System.out.println("There wasn't any task set as completed to remove!");
+        }else{
+            System.out.println("All tasks set as completed were removed!");
         }
     }
 }
