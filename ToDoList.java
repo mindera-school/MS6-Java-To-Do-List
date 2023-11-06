@@ -15,7 +15,7 @@ public class ToDoList {
             toDoList = new String[30];
         }
 
-        int userChoice = 0;
+        String userChoice;
 
         do {
 
@@ -30,8 +30,8 @@ public class ToDoList {
 
 //            System.out.println("\n\u001b[38;5;15m " + Arrays.toString(toDoList) + "\u001b[0m");
 
-            System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
-            System.out.println("\n\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
+            System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m");
+            System.out.println("\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
             System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
             System.out.println("\u001b[38;5;15m3 - Mark as completed\u001b[0m");
             System.out.println("\u001b[38;5;15m4 - Remove as completed\u001b[0m");
@@ -40,34 +40,35 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m7 - Organize alphabetically\u001b[0m");
             System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
             System.out.println("\u001b[38;5;15m9 - Organize by done and undone\u001b[0m");
-            System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m\n");
-            userChoice = scan.nextInt();
+            System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
+            userChoice = scan.next();
 
             scan.nextLine();
 
+
             switch (userChoice) {
-                case 1:
+                case "1":
                     showToDoList(toDoList);
                     break;
-                case 2:
+                case "2":
                     createTask(toDoList);
                     break;
-                case 3:
+                case "3":
                     markTaskAsCompleted(toDoList);
                     break;
-                case 4:
+                case "4":
                     removeTaskAsCompleted(toDoList);
                     break;
-                case 5:
+                case "5":
                     editTask(toDoList);
                     break;
-                case 6:
+                case "6":
                     deleteTask(toDoList);
                     break;
-                case 7:
+                case "7":
                     organizeAlphabetically(toDoList);
                     break;
-                case 8:
+                case "8":
                     premiumPlan = upgradeToDoListPlan(toDoList, premiumPlan);
                     if (premiumPlan) {
                         String[] tempToDoList = new String[30];
@@ -83,10 +84,10 @@ public class ToDoList {
                         toDoList = tempToDoList;
                     }
                     break;
-                case 9:
+                case "9":
                     organizeByDoneAndUndone(toDoList);
                     break;
-                case 0:
+                case "0":
                     System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
                     break;
                 default:
@@ -94,7 +95,7 @@ public class ToDoList {
                     break;
             }
 
-        } while (userChoice != 0);
+        } while (!userChoice.equals("0"));
     }
 
     public static void showToDoList(String[] toDoList) {
@@ -320,17 +321,17 @@ public class ToDoList {
             if (toDoListCopy1[i] != null) {
                 if (toDoListCopy1[i].contains(" ✅")) {
                     System.out.println(toDoListCopy1[i]);
-                    toDoList[counter]=toDoListCopy1[i];
+                    toDoList[counter] = toDoListCopy1[i];
                     counter++;
                 }
             }
         }
 
-        for (int i = 0; i <  toDoListCopy2.length; i++) {
-            if ( toDoListCopy2[i] != null) {
-                if (! toDoListCopy2[i].contains(" ✅")) {
-                    System.out.println( toDoListCopy2[i]);
-                    toDoList[counter] =  toDoListCopy2[i];
+        for (int i = 0; i < toDoListCopy2.length; i++) {
+            if (toDoListCopy2[i] != null) {
+                if (!toDoListCopy2[i].contains(" ✅")) {
+                    System.out.println(toDoListCopy2[i]);
+                    toDoList[counter] = toDoListCopy2[i];
                     counter++;
                 }
             }
