@@ -30,6 +30,7 @@ public class ToDoList {
 
 //            System.out.println("\n\u001b[38;5;15m " + Arrays.toString(toDoList) + "\u001b[0m");
 
+            System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
             System.out.println("\n\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
             System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
             System.out.println("\u001b[38;5;15m3 - Mark as completed\u001b[0m");
@@ -38,8 +39,8 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
             System.out.println("\u001b[38;5;15m7 - Organize alphabetically\u001b[0m");
             System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
-            System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
-            System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
+            System.out.println("\u001b[38;5;15m9 - Organize by done and undone\u001b[0m");
+            System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m\n");
             userChoice = scan.nextInt();
 
             scan.nextLine();
@@ -81,6 +82,9 @@ public class ToDoList {
 
                         toDoList = tempToDoList;
                     }
+                    break;
+                case 9:
+                    organizeByDoneAndUndone(toDoList);
                     break;
                 case 0:
                     System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
@@ -305,4 +309,31 @@ public class ToDoList {
         return premium;
     }
 
+    public static void organizeByDoneAndUndone(String[] toDoList) {
+        String[] toDoListCopy1 = new String[toDoList.length];
+        String[] toDoListCopy2 = new String[toDoList.length];
+        System.arraycopy(toDoList, 0, toDoListCopy1, 0, toDoListCopy1.length);
+        System.arraycopy(toDoList, 0, toDoListCopy2, 0, toDoListCopy1.length);
+        int counter = 0;
+        System.out.println("\nHere is the list organized:");
+        for (int i = 0; i < toDoListCopy1.length; i++) {
+            if (toDoListCopy1[i] != null) {
+                if (toDoListCopy1[i].contains(" ✅")) {
+                    System.out.println(toDoListCopy1[i]);
+                    toDoList[counter]=toDoListCopy1[i];
+                    counter++;
+                }
+            }
+        }
+
+        for (int i = 0; i <  toDoListCopy2.length; i++) {
+            if ( toDoListCopy2[i] != null) {
+                if (! toDoListCopy2[i].contains(" ✅")) {
+                    System.out.println( toDoListCopy2[i]);
+                    toDoList[counter] =  toDoListCopy2[i];
+                    counter++;
+                }
+            }
+        }
+    }
 }
