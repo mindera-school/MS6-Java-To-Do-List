@@ -2,18 +2,15 @@
 public class Tarefa {
     boolean created;
     boolean done;
-    boolean deleted;
     String task;
     String info;
+    String time;
 
     public Tarefa(String task, String info) {
-        this.created = true;
         this.done = false;
-        this.deleted = false;
         this.task = task;
         this.info = info;
         ToDoList.tarefas.add(this);
-        ToDoList.taskCount++;
     }
 
     public boolean isCreated() {
@@ -30,14 +27,6 @@ public class Tarefa {
 
     public void setDone(boolean done) {
         this.done = done;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 
     public String getTask() {

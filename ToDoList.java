@@ -4,12 +4,12 @@ public class ToDoList {
     static Scanner scan = new Scanner(System.in);
     static boolean premiumPlan = false;
     static ArrayList<Tarefa> tarefas = new ArrayList<>();
-    static int taskCount = 0;
-
+    static ArrayList<Tarefa> garbage = new ArrayList<>();
     static int maxTasks = 0;
 
     public static void main(String[] args) {
 
+        int userChoice = 0;
 
         if (!premiumPlan) {
             System.out.println("\n\t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" +
@@ -19,13 +19,22 @@ public class ToDoList {
             maxTasks = 30;
         }
 
-        int userChoice = 0;
-
         do {
+            int done = 0;
 
-
-            System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + (maxTasks - taskCount) + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
-            System.out.println("Number of tasks: " + taskCount);
+            System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + (maxTasks - tarefas.size()) + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
+            for (int i = 0; i < tarefas.size(); i++) {
+                if (tarefas.get(i).done) {
+                    done++;
+                }
+            }
+            double percentage;
+            if(tarefas.size()==0){
+                percentage=0;
+            }else {
+                percentage = (done * 100) / tarefas.size();
+            }
+            System.out.println("Number of tasks: " + tarefas.size() + "  (" + percentage +"% completed!)");
 
             System.out.println("\n\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
             System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
@@ -36,6 +45,7 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m7 - Organize A-Z / Z-A / Done-Undone\u001b[0m");
             System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
             System.out.println("\u001b[38;5;15m9 - Delete all completed tasks\u001b[0m");
+            System.out.println("\u001b[38;5;15m10 - Recover deleted tasks\u001b[0m");
             System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
             System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
             userChoice = scan.nextInt();
@@ -53,7 +63,7 @@ public class ToDoList {
                     markTaskAsCompleted();
                     break;
                 case 4:
-                    removeTaskAsCompleted();
+                    unmarkTaskAsCompleted();
                     break;
                 case 5:
                     editTask();
@@ -88,8 +98,11 @@ public class ToDoList {
                 case 9:
                     deleteAllDone();
                     break;
+                case 10:
+                    recover();
+                    break;
                 case 0:
-                    System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
+                    System.out.println("\n\u001b[38;5;9mClosing ToDoList program... Byeeee 😘\u001b[0m");
                     break;
                 default:
                     System.out.println("\n\u001b[38;5;9mInvalid option!\u001b[0m");
@@ -101,26 +114,16 @@ public class ToDoList {
 
     public static void showToDoList() {
 
-
-        int count = 0;
-        for (int i = 0; i < tarefas.size(); i++) {
-            if (tarefas.get(i) != null) {
-                count++;
-            }
-        }
-
-        if (count > 0) {
+        if (tarefas.size() > 0) {
             System.out.println("\n\t\t\u001b[38;5;15mToDoList\u001b[0m");
             System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
             for (int i = 0; i < tarefas.size(); i++) {
-                if (!tarefas.get(i).deleted) {
-                    if (tarefas.get(i).done) {
-                        System.out.println("\u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + tarefas.get(i).task +
-                                "  🏷️ " + tarefas.get(i).info + " ✅ \u001b[0m");
-                    } else {
-                        System.out.println("\u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + tarefas.get(i).task +
-                                "  🏷️ " + tarefas.get(i).info + "\u001b[0m");
-                    }
+                if (tarefas.get(i).done) {
+                    System.out.println("\u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + tarefas.get(i).task +
+                            "  🏷️ " + tarefas.get(i).info + " ✅ \u001b[0m");
+                } else {
+                    System.out.println("\u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + tarefas.get(i).task +
+                            "  🏷️ " + tarefas.get(i).info + "\u001b[0m");
                 }
             }
             System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
@@ -139,7 +142,7 @@ public class ToDoList {
         String userNewInfo = scan.nextLine().trim();
 
 
-        if (taskCount < 30) {
+        if (tarefas.size() < 30) {
             new Tarefa(userNewTask, userNewInfo);
             System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + "📜 " + userNewTask +
                     "  🏷️ " + userNewInfo + "\u001b[38;5;10m' was created!\u001b[0m");
@@ -160,7 +163,7 @@ public class ToDoList {
             System.out.print("\n\u001b[38;5;15mChoose a task to mark as completed: \u001b[0m");
             int userChoiceOfTaskToMarkAsCompleted = scan.nextInt() - 1;
 
-            if (!tarefas.get(userChoiceOfTaskToMarkAsCompleted).deleted) {
+            if (userChoiceOfTaskToMarkAsCompleted >= 0 && userChoiceOfTaskToMarkAsCompleted < tarefas.size()) {
                 if (tarefas.get(userChoiceOfTaskToMarkAsCompleted).done) {
                     System.out.println("\n\u001b[38;5;9mThat task is already marked as completed!\u001b[0m");
                 } else {
@@ -175,7 +178,7 @@ public class ToDoList {
         }
     }
 
-    public static void removeTaskAsCompleted() {
+    public static void unmarkTaskAsCompleted() {
         Scanner scan = new Scanner(System.in);
         showToDoList();
         int existsCompletedTasks = 0;
@@ -190,7 +193,7 @@ public class ToDoList {
             System.out.print("\n\u001b[38;5;15mChoose a task to remove as completed: \u001b[0m");
             int userChoiceOfTaskToRemoveAsCompleted = scan.nextInt() - 1;
 
-            if (!tarefas.get(userChoiceOfTaskToRemoveAsCompleted).deleted) {
+            if (userChoiceOfTaskToRemoveAsCompleted >= 0 && userChoiceOfTaskToRemoveAsCompleted < tarefas.size()) {
                 tarefas.get(userChoiceOfTaskToRemoveAsCompleted).done = false;
             } else {
                 System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
@@ -204,13 +207,13 @@ public class ToDoList {
         Scanner scan = new Scanner(System.in);
         showToDoList();
 
-        if (taskCount != 0) {
+        if (tarefas.size() != 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to edit: \u001b[0m");
             int userChoiceOfTaskToEdit = scan.nextInt() - 1;
 
             scan.nextLine();
 
-            if (!tarefas.get(userChoiceOfTaskToEdit).deleted) {
+            if (userChoiceOfTaskToEdit >= 0 && userChoiceOfTaskToEdit < tarefas.size()) {
                 System.out.println("\n\u001b[38;5;15mOld: " + tarefas.get(userChoiceOfTaskToEdit).task + "\u001b[0m");
                 System.out.print("\u001b[38;5;15mNew: \u001b[0m");
                 String userEditTask = scan.nextLine();
@@ -237,14 +240,14 @@ public class ToDoList {
 
         showToDoList();
 
-        if (taskCount > 0) {
+        if (tarefas.size() > 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to delete: \u001b[0m");
             int userChoiceOfTaskToDelete = scan.nextInt() - 1;
 
-            if (!tarefas.get(userChoiceOfTaskToDelete).deleted) {
+            if (userChoiceOfTaskToDelete >= 0 && userChoiceOfTaskToDelete < tarefas.size()) {
                 System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + tarefas.get(userChoiceOfTaskToDelete).task + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
-                tarefas.get(userChoiceOfTaskToDelete).deleted = true;
-                taskCount--;
+                garbage.add(tarefas.get(userChoiceOfTaskToDelete));
+                tarefas.remove(userChoiceOfTaskToDelete);
             } else {
                 System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
             }
@@ -259,6 +262,7 @@ public class ToDoList {
 
     public static void organizeZA() {
         Collections.sort(tarefas, Comparator.comparing(Tarefa::getTask));
+        Collections.reverse(tarefas);
     }
 
     public static void organizeDoneUndone() {
@@ -298,9 +302,39 @@ public class ToDoList {
     public static void deleteAllDone() {
         for (int i = 0; i < tarefas.size(); i++) {
             if (tarefas.get(i).done) {
-                tarefas.get(i).deleted = true;
+                garbage.add(tarefas.get(i));
             }
         }
+        for (int i = 0; i < tarefas.size(); i++) {
+            if (tarefas.get(i).done) {
+                tarefas.remove(i);
+                i--;
+            }
+        }
+
     }
 
+    public static void recover() {
+        if (garbage.size() != 0) {
+            for (int i = 0; i < garbage.size(); i++) {
+                if (garbage.get(i).done) {
+                    System.out.println("🗑️  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + garbage.get(i).task +
+                            "  🏷️ " + garbage.get(i).info + " ✅ \u001b[0m");
+                } else {
+                    System.out.println("🗑️  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + garbage.get(i).task +
+                            "  🏷️ " + garbage.get(i).info + "\u001b[0m");
+                }
+            }
+            System.out.print("Insert task ID:");
+            int userChoiceOfTaskToEdit = scan.nextInt() - 1;
+            if (userChoiceOfTaskToEdit >= 0 && userChoiceOfTaskToEdit < garbage.size()) {
+                tarefas.add(garbage.get(userChoiceOfTaskToEdit));
+                garbage.remove(userChoiceOfTaskToEdit);
+                System.out.println("Task recovered! 🥳");
+            }
+        } else {
+            System.out.println("You have no deleted tasks!");
+        }
+
+    }
 }
