@@ -132,7 +132,8 @@ public class ToDoList {
                     }
                 }
             }
-            System.out.println("This To Do List has " + taskCountDisplay(toDoList) + " tasks!");
+            System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " tasks!\n");
+            displayTaskCompletionPercentage(toDoList);
             System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
         } else {
             System.out.println("\n\u001b[38;5;9mThe ToDoList is empty! You should create a task first.\u001b[0m");
@@ -426,5 +427,20 @@ public class ToDoList {
         }
 
         showToDoList(toDoList);
+    }
+
+    public static void displayTaskCompletionPercentage(String[] toDoList) {
+        double completedCounter = 0;
+        double toDoListLength = 0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null) {
+                if (toDoList[i].contains(" ✅")) {
+                    completedCounter += 1;
+                }
+                toDoListLength += 1;
+            }
+        }
+        double taskCompletionPercentage = (completedCounter / toDoListLength) * 100;
+        System.out.println("The task completion percentage is " + (int) taskCompletionPercentage + "%!\n");
     }
 }
