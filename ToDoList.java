@@ -21,8 +21,9 @@ public class ToDoList {
         int userChoice;
 
         if (!premiumPlan) {
-            System.out.println("\n\t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" +
-                    "You are currently using the Free Plan of ToDoList!\nYou can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
+            System.out.println("\n                                                                  \t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" +
+                    "                                                                  You are currently using the Free Plan of ToDoList!\n" +
+                    "                                                                  You can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
             maxTasks = 10;
         } else {
             maxTasks = 30;
@@ -32,7 +33,7 @@ public class ToDoList {
             int done = 0;
             Thread.sleep(2500);
 
-            System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + (maxTasks - tarefas.size()) + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
+            System.out.println("\n                                                                  \u001b[38;5;15mYou still have \u001b[38;5;11m" + (maxTasks - tarefas.size()) + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
             for (int i = 0; i < tarefas.size(); i++) {
                 if (tarefas.get(i).done) {
                     done++;
@@ -44,20 +45,20 @@ public class ToDoList {
             }else {
                 percentage = (done * 100) / tarefas.size();
             }
-            System.out.println("Number of tasks: " + tarefas.size() + "  (" + percentage +"% completed!)");
+            System.out.println("                                                                  Number of tasks: " + tarefas.size() + "  (" + percentage +"% completed!)");
 
-            System.out.println("\n\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
-            System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
-            System.out.println("\u001b[38;5;15m3 - Mark as completed\u001b[0m");
-            System.out.println("\u001b[38;5;15m4 - Remove as completed\u001b[0m");
-            System.out.println("\u001b[38;5;15m5 - Edit task\u001b[0m");
-            System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
-            System.out.println("\u001b[38;5;15m7 - Organize A-Z / Z-A / \u001b[38;5;11mDone-Undone\u001b[0m");
-            System.out.println("\u001b[38;5;15m8 - \u001b[38;5;11mDelete all completed tasks\u001b[0m");
-            System.out.println("\u001b[38;5;15m9 - \u001b[38;5;11mRecover deleted tasks\u001b[0m");
-            System.out.println("\u001b[38;5;15m10 - \u001b[38;5;11m🌟Upgrade🌟 \u001b[38;5;15mToDoList Plan\u001b[0m");
-            System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
-            System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
+            System.out.println("\n\u001b[38;5;15m                                                                  1 - Show ToDoList\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  2 - Create task\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  3 - Mark as completed\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  4 - Remove as completed\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  5 - Edit task\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  6 - Delete task\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  7 - Organize A-Z / Z-A / \u001b[38;5;11mDone-Undone\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  8 - \u001b[38;5;11mDelete all completed tasks\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  9 - \u001b[38;5;11mRecover deleted tasks\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  10 - \u001b[38;5;11m🌟Upgrade🌟 \u001b[38;5;15mToDoList Plan\u001b[0m");
+            System.out.println("\u001b[38;5;15m                                                                  0 - Exit ToDoList\u001b[0m\n");
+            System.out.print("\u001b[38;5;15m                                                                  Choose a option: \u001b[0m");
             userChoice = scan.nextInt();
 
             scan.nextLine();
