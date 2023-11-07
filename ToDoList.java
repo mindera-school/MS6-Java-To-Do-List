@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -11,26 +13,33 @@ public class ToDoList {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int userChoice;
+        start();
+
+    }
+
+
+    public static void start() throws InterruptedException {
 
         if (!premiumPlan) {
-            System.out.println("\n                                                                  \t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" +
-                    "                                                                  You are currently using the Free Plan of ToDoList!\n" +
-                    "                                                                  You can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
+            System.out.println("\n                                                                  \t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" + "                                                                  You are currently using the Free Plan of ToDoList!\n" + "                                                                  You can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
             maxTasks = 10;
         } else {
             maxTasks = 30;
         }
-int sleep=0;
+        int sleep = 0;
 
+        int userChoice;
         do {
+            userChoice = -10;
             int done = 0;
-            if(sleep==0) {
+
+            if (sleep == 0) {
                 Thread.sleep(2500);
                 sleep++;
-            }else{
+            } else {
                 Thread.sleep(500);
             }
+
             System.out.println("\n\u001b[38;5;15m                                                                  You still have \u001b[38;5;11m" + (maxTasks - tasks.size()) + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
             for (int i = 0; i < tasks.size(); i++) {
                 if (tasks.get(i).done) {
@@ -58,69 +67,73 @@ int sleep=0;
             System.out.println("                                                                  \u001b[38;5;15m11 - \u001b[38;5;11m🌟Upgrade🌟 \u001b[38;5;15mToDoList Plan\u001b[0m");
             System.out.println("                                                                  \u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
             System.out.print("                                                                  \u001b[38;5;15mChoose a option: \u001b[0m");
-            userChoice = scan.nextInt();
+            try {
+                userChoice = scan.nextInt();
+                scan.nextInt();
 
-            scan.nextLine();
-
-            switch (userChoice) {
-                case 1:
-                    showToDoList();
-                    break;
-                case 2:
-                    createTask();
-                    break;
-                case 3:
-                    markTaskAsCompleted();
-                    break;
-                case 4:
-                    unmarkTaskAsCompleted();
-                    break;
-                case 5:
-                    editTask();
-                    break;
-                case 6:
-                    deleteTask();
-                    break;
-                case 7:
-                    System.out.println("1-  A-Z  ||  2-  Z-A  ||  3-  Done-Undone");
-                    int userChoic = scan.nextInt();
-                    switch (userChoic) {
-                        case 1:
-                            organizeAZ();
-                            break;
-                        case 2:
-                            organizeZA();
-                            break;
-                        case 3:
-                            organizeDoneUndone();
-                            break;
-                        default:
-                            System.out.println("Ahm...?");
-                    }
-                    break;
-                case 8:
-                    deleteAllDone();
-                    break;
-                case 9:
-                    recover();
-                    break;
-                case 10:
-                    updateTime();
-                    break;
-                case 11:
-                    premiumPlan = upgradeToDoListPlan(premiumPlan);
-                    if (premiumPlan) {
-                        maxTasks = 30;
-                    }
-                    break;
-                case 0:
-                    System.out.println("\n\u001b[38;5;9mClosing ToDoList program... Byeeee 😘\u001b[0m");
-                    break;
-                default:
-                    System.out.println("\n\u001b[38;5;9mInvalid option!\u001b[0m");
-                    break;
+                switch (userChoice) {
+                    case 1:
+                        showToDoList();
+                        break;
+                    case 2:
+                        createTask();
+                        break;
+                    case 3:
+                        markTaskAsCompleted();
+                        break;
+                    case 4:
+                        unmarkTaskAsCompleted();
+                        break;
+                    case 5:
+                        editTask();
+                        break;
+                    case 6:
+                        deleteTask();
+                        break;
+                    case 7:
+                        System.out.println("1-  A-Z  ||  2-  Z-A  ||  3-  Done-Undone");
+                        int userChoic = scan.nextInt();
+                        switch (userChoic) {
+                            case 1:
+                                organizeAZ();
+                                break;
+                            case 2:
+                                organizeZA();
+                                break;
+                            case 3:
+                                organizeDoneUndone();
+                                break;
+                            default:
+                                System.out.println("Ahm...?");
+                        }
+                        break;
+                    case 8:
+                        deleteAllDone();
+                        break;
+                    case 9:
+                        recover();
+                        break;
+                    case 10:
+                        updateTime();
+                        break;
+                    case 11:
+                        premiumPlan = upgradeToDoListPlan(premiumPlan);
+                        if (premiumPlan) {
+                            maxTasks = 30;
+                        }
+                        break;
+                    case 0:
+                        System.out.println("\n\u001b[38;5;9mClosing ToDoList program... Byeeee 😘\u001b[0m");
+                        break;
+                    default:
+                        System.out.println("\n\u001b[38;5;9mInvalid option!\u001b[0m");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("\n\u001b[38;5;9mSomething went wrong!\nError: \u001b[0m"+e);
+                scan.next();
+                start();
             }
-
         } while (userChoice != 0);
     }
 
@@ -131,11 +144,9 @@ int sleep=0;
             System.out.println("\u001b[38;5;8m                                                                  ------------------------------------------------\u001b[0m");
             for (int i = 0; i < tasks.size(); i++) {
                 if (tasks.get(i).done) {
-                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + tasks.get(i).description +
-                            "  🏷️ " + tasks.get(i).info + "  🕓 " + tasks.get(i).timestamp + " ✅ \u001b[0m");
+                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + tasks.get(i).description + "  🏷️ " + tasks.get(i).info + "  🕓 " + tasks.get(i).timestamp + " ✅ \u001b[0m");
                 } else {
-                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + tasks.get(i).description +
-                            "  🏷️ " + tasks.get(i).info + "  🕓 " + tasks.get(i).timestamp + "\u001b[0m");
+                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + tasks.get(i).description + "  🏷️ " + tasks.get(i).info + "  🕓 " + tasks.get(i).timestamp + "\u001b[0m");
                 }
             }
             System.out.println("                                                                  \u001b[38;5;8m------------------------------------------------\u001b[0m");
@@ -144,7 +155,7 @@ int sleep=0;
         }
     }
 
-    public static void createTask() {
+    public static void createTask() throws IOException {
         Scanner scan = new Scanner(System.in);
 
         System.out.print("\n\u001b[38;5;15mCreate task: \u001b[0m");
@@ -154,9 +165,9 @@ int sleep=0;
         timestamp = new Timestamp(System.currentTimeMillis());
 
         if (tasks.size() < 30) {
-            new Task(userNewTask, userNewInfo, timestamp);
-            System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + "📜 " + userNewTask +
-                    "  🏷️ " + userNewInfo + "\u001b[38;5;10m' was created!\u001b[0m");
+            Task task = new Task(userNewTask, userNewInfo, timestamp);
+            System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + "📜 " + userNewTask + "  🏷️ " + userNewInfo + "\u001b[38;5;10m' was created!\u001b[0m");
+
         } else {
             System.out.println("\n\n\u001b[38;5;9mThe list is full! You don't have more space.\u001b[0m");
         }
@@ -335,11 +346,9 @@ int sleep=0;
             if (garbage.size() != 0) {
                 for (int i = 0; i < garbage.size(); i++) {
                     if (garbage.get(i).done) {
-                        System.out.println("                                                                  🗑️  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + garbage.get(i).description +
-                                "  🏷️ " + garbage.get(i).info + " ✅ \u001b[0m");
+                        System.out.println("                                                                  🗑️  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + garbage.get(i).description + "  🏷️ " + garbage.get(i).info + " ✅ \u001b[0m");
                     } else {
-                        System.out.println("                                                                  🗑️  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + garbage.get(i).description +
-                                "  🏷️ " + garbage.get(i).info + "\u001b[0m");
+                        System.out.println("                                                                  🗑️  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + garbage.get(i).description + "  🏷️ " + garbage.get(i).info + "\u001b[0m");
                     }
                 }
                 System.out.print("Insert task ID:");
@@ -368,13 +377,16 @@ int sleep=0;
                 int userChoiceOfTaskToUpdate = scan.nextInt() - 1;
 
                 if (userChoiceOfTaskToUpdate >= 0 && userChoiceOfTaskToUpdate < tasks.size()) {
-                    System.out.println("\u001b[38;5;10m                                                                        " +
-                            "The time of task '\u001b[38;5;15m" + tasks.get(userChoiceOfTaskToUpdate).description + "\u001b[38;5;10m' was successfully updated!\u001b[0m");
+                    System.out.println("\u001b[38;5;10m                                                                        " + "The time of task '\u001b[38;5;15m" + tasks.get(userChoiceOfTaskToUpdate).description + "\u001b[38;5;10m' was successfully updated!\u001b[0m");
                     tasks.get(userChoiceOfTaskToUpdate).timestamp = new Timestamp(System.currentTimeMillis());
                 }
             }
         } else {
             System.out.println("\u001b[0m                                                                        You have no premium... sorry!");
         }
+    }
+
+    public static void loadHistory() {
+
     }
 }

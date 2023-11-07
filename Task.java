@@ -1,3 +1,5 @@
+import org.w3c.dom.css.CSSStyleRule;
+
 import java.sql.Timestamp;
 
 public class Task {
@@ -37,5 +39,11 @@ public class Task {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    @Override
+    public String toString() {
+
+        return description +"/"+ info +"/"+ done +"/"+ timestamp+"\n";
     }
 }
