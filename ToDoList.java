@@ -16,9 +16,9 @@ public class ToDoList {
     static ArrayList<Tarefa> garbage = new ArrayList<>();
     static int maxTasks = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        int userChoice = 0;
+        int userChoice;
 
         if (!premiumPlan) {
             System.out.println("\n\t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" +
@@ -30,6 +30,7 @@ public class ToDoList {
 
         do {
             int done = 0;
+            Thread.sleep(2500);
 
             System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + (maxTasks - tarefas.size()) + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
             for (int i = 0; i < tarefas.size(); i++) {
@@ -51,10 +52,10 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m4 - Remove as completed\u001b[0m");
             System.out.println("\u001b[38;5;15m5 - Edit task\u001b[0m");
             System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
-            System.out.println("\u001b[38;5;15m7 - Organize A-Z / Z-A / Done-Undone\u001b[0m");
-            System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
-            System.out.println("\u001b[38;5;15m9 - Delete all completed tasks\u001b[0m");
-            System.out.println("\u001b[38;5;15m10 - Recover deleted tasks\u001b[0m");
+            System.out.println("\u001b[38;5;15m7 - Organize A-Z / Z-A / \u001b[38;5;11mDone-Undone\u001b[0m");
+            System.out.println("\u001b[38;5;15m8 - \u001b[38;5;11mDelete all completed tasks\u001b[0m");
+            System.out.println("\u001b[38;5;15m9 - \u001b[38;5;11mRecover deleted tasks\u001b[0m");
+            System.out.println("\u001b[38;5;15m10 - \u001b[38;5;11m🌟Upgrade🌟 \u001b[38;5;15mToDoList Plan\u001b[0m");
             System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
             System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
             userChoice = scan.nextInt();
@@ -274,13 +275,18 @@ public class ToDoList {
         Collections.reverse(tarefas);
     }
 
-    public static void organizeDoneUndone() {
-        Collections.sort(tarefas, new Comparator<Tarefa>() {
-            @Override
-            public int compare(Tarefa abc1, Tarefa abc2) {
-                return Boolean.compare(abc2.done, abc1.done);
-            }
-        });
+    public static void organizeDoneUndone() throws InterruptedException {
+
+        if(premiumPlan) {
+            Collections.sort(tarefas, new Comparator<Tarefa>() {
+                @Override
+                public int compare(Tarefa abc1, Tarefa abc2) {
+                    return Boolean.compare(abc2.done, abc1.done);
+                }
+            });
+        }else{
+            System.out.println("\u001b[0mYou have no premium... sorry!");
+        }
     }
 
     public static boolean upgradeToDoListPlan(ArrayList toDoList, boolean premium) {
