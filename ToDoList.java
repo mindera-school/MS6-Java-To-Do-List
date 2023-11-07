@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class ToDoList {
     static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
@@ -58,7 +59,7 @@ public class ToDoList {
 
             switch (userChoice) {
                 case "1":
-                    showToDoList(toDoList);
+                    showToDoList(toDoList, "ToDoList");
                     break;
                 case "2":
                     createTask(toDoList);
@@ -117,7 +118,7 @@ public class ToDoList {
         } while (!userChoice.equals("0"));
     }
 
-    public static void showToDoList(String[] toDoList) {
+    public static void showToDoList(String[] toDoList, String title) {
 
         int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
@@ -127,14 +128,17 @@ public class ToDoList {
         }
 
         if (count > 0) {
-            System.out.println("\n\t\t\u001b[38;5;15mToDoList\u001b[0m");
+            System.out.println("\n\t\t\u001b[38;5;15m" + title + "\u001b[0m");
             System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
+            int counter =0;
             for (int i = 0; i < toDoList.length; i++) {
                 if (toDoList[i] != null) {
                     if (toDoList[i].contains(" ✅")) {
-                        System.out.println("\u001b[38;5;7m" + i + ". \u001b[38;5;40m" + toDoList[i] + "\u001b[0m");
+                        System.out.println("\u001b[38;5;7m" + counter + ". \u001b[38;5;40m" + toDoList[i] + "\u001b[0m");
+                        counter++;
                     } else {
-                        System.out.println("\u001b[38;5;7m" + i + ". \u001b[38;5;1m" + toDoList[i] + "\u001b[0m");
+                        System.out.println("\u001b[38;5;7m" + counter + ". \u001b[38;5;1m" + toDoList[i] + "\u001b[0m");
+                        counter++;
                     }
                 }
             }
@@ -181,10 +185,10 @@ public class ToDoList {
         int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
-                System.out.println(i + " - " + toDoList[i]);
                 count++;
             }
         }
+        showToDoList(toDoList,"ToDoList");
         if (count != 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to mark as completed: \u001b[0m");
             int userChoiceOfTaskToMarkAsCompleted = scan.nextInt();
@@ -341,11 +345,9 @@ public class ToDoList {
         System.arraycopy(toDoList, 0, toDoListCopy1, 0, toDoListCopy1.length);
         System.arraycopy(toDoList, 0, toDoListCopy2, 0, toDoListCopy1.length);
         int counter = 0;
-        System.out.println("\nHere is the list organized:");
         for (int i = 0; i < toDoListCopy1.length; i++) {
             if (toDoListCopy1[i] != null) {
                 if (toDoListCopy1[i].contains(" ✅")) {
-                    System.out.println(toDoListCopy1[i]);
                     toDoList[counter] = toDoListCopy1[i];
                     counter++;
                 }
@@ -355,13 +357,12 @@ public class ToDoList {
         for (int i = 0; i < toDoListCopy2.length; i++) {
             if (toDoListCopy2[i] != null) {
                 if (!toDoListCopy2[i].contains(" ✅")) {
-                    System.out.println(toDoListCopy2[i]);
                     toDoList[counter] = toDoListCopy2[i];
                     counter++;
                 }
             }
         }
-
+        showToDoList(toDoList, "Updated ToDoList");
         System.out.println("This To Do List has " + taskCountDisplay(toDoList) + " tasks");
     }
 
@@ -377,9 +378,9 @@ public class ToDoList {
             }
         }
         if (counter < 1) {
-            System.out.println("There wasn't any task set as completed to remove!");
+            System.out.println("\n\u001b[38;5;9mThere wasn't any task set as completed to remove!\u001b[0m");
         } else {
-            System.out.println("All tasks set as completed were removed!");
+            System.out.println("\n\u001b[38;5;10mAll tasks set as completed were removed!\u001b[0m");
         }
     }
 
@@ -400,7 +401,7 @@ public class ToDoList {
                 }
             }
         }
-        showToDoList(toDoList);
+        showToDoList(toDoList, "Updated ToDoList");
     }
 
     public static int taskCountDisplay(String[] toDoList) {
@@ -415,7 +416,7 @@ public class ToDoList {
 
     public static void addTaskNote(String[] toDoList) {
         Scanner scanner = new Scanner(System.in);
-        showToDoList(toDoList);
+        showToDoList(toDoList, "ToDoList");
         System.out.print("\nTell me the number of the task you want to add the note to: ");
         int numberOfTask = scanner.nextInt();
         System.out.print("\nTell me the note you would like to add: ");
@@ -435,7 +436,7 @@ public class ToDoList {
             System.out.println("That task doesn't exist");
         }
 
-        showToDoList(toDoList);
+        showToDoList(toDoList, "Updated ToDoList");
     }
 
     public static void displayTaskCompletionPercentage(String[] toDoList) {
