@@ -128,6 +128,7 @@ public class ToDoList {
                     }
                 }
             }
+            System.out.println("This To Do List has " + taskCountDisplay(toDoList) + " tasks");
             System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
         } else {
             System.out.println("\n\u001b[38;5;9mThe ToDoList is empty! You should create a task first.\u001b[0m");
@@ -346,6 +347,8 @@ public class ToDoList {
                 }
             }
         }
+
+        System.out.println("This To Do List has " + taskCountDisplay(toDoList) + " tasks");
     }
 
     public static void removeAllTasksSetAsCompleted(String[] toDoList, ArrayList<String> deletedTasks) {
@@ -374,15 +377,25 @@ public class ToDoList {
         System.out.println("\nChoose the one you want to recover");
         Scanner scanner = new Scanner(System.in);
         int userInput = scanner.nextInt();
-        if(userInput>=0 && userInput< deletedTasks.size()){
-            for(int i=0;i< toDoList.length;i++){
-                if(toDoList[i]==null){
-                    toDoList[i]=deletedTasks.get(userInput);
+        if (userInput >= 0 && userInput < deletedTasks.size()) {
+            for (int i = 0; i < toDoList.length; i++) {
+                if (toDoList[i] == null) {
+                    toDoList[i] = deletedTasks.get(userInput);
                     deletedTasks.remove(userInput);
                     break;
                 }
             }
         }
         showToDoList(toDoList);
+    }
+
+    public static int taskCountDisplay(String[] toDoList) {
+        int counter = 0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null) {
+                counter++;
+            }
+        }
+        return counter;
     }
 }
