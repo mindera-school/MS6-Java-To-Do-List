@@ -1,8 +1,14 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class ToDoList {
+    static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
@@ -151,8 +157,11 @@ public class ToDoList {
 
             for (int i = 0; i < toDoList.length; i++) {
                 if (toDoList[i] == null) {
-                    toDoList[i] = userNewTask;
+                    //toDoList[i] = userNewTask;
                     System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + userNewTask + "\u001b[38;5;10m' was created!\u001b[0m");
+                    LocalDateTime myDateObj = LocalDateTime.now();
+                    String formattedDate = myDateObj.format(myFormatObj);
+                    toDoList[i] = userNewTask + " \uD83D\uDD70 " + formattedDate;
                     added = true;
                     break;
                 }
