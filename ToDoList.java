@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -19,7 +20,6 @@ public class ToDoList {
 
 
     public static void start() throws InterruptedException {
-
         if (!premiumPlan) {
             System.out.println("\n                                                                  \t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" + "                                                                  You are currently using the Free Plan of ToDoList!\n" + "                                                                  You can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
             maxTasks = 10;
@@ -69,7 +69,6 @@ public class ToDoList {
             System.out.print("                                                                  \u001b[38;5;15mChoose a option: \u001b[0m");
             try {
                 userChoice = scan.nextInt();
-                scan.nextInt();
 
                 switch (userChoice) {
                     case 1:
@@ -130,7 +129,7 @@ public class ToDoList {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("\n\u001b[38;5;9mSomething went wrong!\nError: \u001b[0m"+e);
+                System.out.println("\n\u001b[38;5;9mSomething went wrong!\nError: \u001b[0m" + e);
                 scan.next();
                 start();
             }
@@ -277,22 +276,21 @@ public class ToDoList {
 
     public static void organizeAZ() {
         Collections.sort(tasks, Comparator.comparing(Task::getDescription));
+        System.out.println("\u001b[0m                                                                        Organized! 🥳");
     }
 
     public static void organizeZA() {
-        Collections.sort(tasks, Comparator.comparing(Task::getDescription));
+        organizeAZ();
         Collections.reverse(tasks);
+        System.out.println("\u001b[0m                                                                        Organized! 🥳");
     }
 
     public static void organizeDoneUndone() throws InterruptedException {
 
         if (premiumPlan) {
-            Collections.sort(tasks, new Comparator<Task>() {
-                @Override
-                public int compare(Task abc1, Task abc2) {
-                    return Boolean.compare(abc2.done, abc1.done);
-                }
-            });
+            Collections.sort(tasks, Comparator.comparing(Task::isDone));
+            Collections.reverse(tasks);
+            System.out.println("\u001b[0m                                                                        Organized! 🥳");
         } else {
             System.out.println("\u001b[0m                                                                        You have no premium... sorry!");
         }
@@ -384,9 +382,5 @@ public class ToDoList {
         } else {
             System.out.println("\u001b[0m                                                                        You have no premium... sorry!");
         }
-    }
-
-    public static void loadHistory() {
-
     }
 }
