@@ -134,10 +134,10 @@ public class ToDoList {
             for (int i = 0; i < toDoList.length; i++) {
                 if (toDoList[i] != null) {
                     if (toDoList[i].contains(" ✅")) {
-                        System.out.println("\u001b[38;5;7m" + counter + ". \u001b[38;5;40m" + toDoList[i] + "\u001b[0m");
+                        System.out.println("\u001b[38;5;7m" + i + ". \u001b[38;5;40m" + toDoList[i] + "\u001b[0m");
                         counter++;
                     } else {
-                        System.out.println("\u001b[38;5;7m" + counter + ". \u001b[38;5;1m" + toDoList[i] + "\u001b[0m");
+                        System.out.println("\u001b[38;5;7m" + i + ". \u001b[38;5;1m" + toDoList[i] + "\u001b[0m");
                         counter++;
                     }
                 }
@@ -336,6 +336,8 @@ public class ToDoList {
                 System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
             }
         }
+
+        organizeList(toDoList);
     }
 
     public static void organizeAlphabetically(String[] toDoList) {
@@ -418,6 +420,7 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;10mAll tasks set as completed were removed!\u001b[0m\n");
             showToDoList(toDoList, "Updated ToDoList");
         }
+        organizeList(toDoList);
     }
 
     public static void recoverDeletedTasks(String[] toDoList, ArrayList<String> deletedTasks) {
@@ -493,7 +496,7 @@ public class ToDoList {
             } else {
                 System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
             }
-        }else{
+        } else {
             System.out.println("\n\u001b[38;5;9mThere !\u001b[0m");
         }
     }
@@ -529,5 +532,17 @@ public class ToDoList {
             return true;
         }
         return false;
+    }
+
+    public static void organizeList(String[] toDoList) {
+        String[] toDoListCopy =new String[toDoList.length];
+        int counter=0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if(toDoList[i]!=null){
+                toDoListCopy[counter] =toDoList[i];
+                counter++;
+            }
+        }
+        System.arraycopy(toDoListCopy, 0, toDoList, 0, toDoListCopy.length);
     }
 }
