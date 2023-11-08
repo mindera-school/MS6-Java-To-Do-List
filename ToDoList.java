@@ -342,13 +342,30 @@ public class ToDoList {
 
     public static void organizeAlphabetically(String[] toDoList) {
         int count = 0;
+        String[] toDoListCopy1 = new String[toDoList.length];
+        System.arraycopy(toDoList, 0, toDoListCopy1, 0, toDoListCopy1.length);
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
                 count++;
             }
         }
         Arrays.sort(toDoList, 0, count);
-        showToDoList(toDoList, "Updated ToDoList");
+        boolean isAlreadyOrganized = false;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null) {
+                if (getTaskName(toDoList[i]).equals(getTaskName(toDoListCopy1[i]))) {
+                    isAlreadyOrganized = true;
+                } else {
+                    isAlreadyOrganized = false;
+                    break;
+                }
+            }
+        }
+        if (isAlreadyOrganized) {
+            System.out.println("\n\u001b[38;5;9mThe ToDoList is already organized alphabetically!\u001b[0m");
+        } else {
+            showToDoList(toDoList, "Updated ToDoList");
+        }
     }
 
     public static boolean upgradeToDoListPlan(String[] toDoList, boolean premium) {
@@ -379,8 +396,10 @@ public class ToDoList {
     public static void organizeByDoneAndUndone(String[] toDoList) {
         String[] toDoListCopy1 = new String[toDoList.length];
         String[] toDoListCopy2 = new String[toDoList.length];
+        String[] toDoListCopy3 = new String[toDoList.length];
         System.arraycopy(toDoList, 0, toDoListCopy1, 0, toDoListCopy1.length);
         System.arraycopy(toDoList, 0, toDoListCopy2, 0, toDoListCopy1.length);
+        System.arraycopy(toDoList, 0, toDoListCopy3, 0, toDoListCopy1.length);
         int counter = 0;
         for (int i = 0; i < toDoListCopy1.length; i++) {
             if (toDoListCopy1[i] != null) {
@@ -399,7 +418,24 @@ public class ToDoList {
                 }
             }
         }
-        showToDoList(toDoList, "Updated ToDoList");
+        boolean isAlreadyOrganized = false;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null) {
+                if (getTaskName(toDoList[i]).equals(getTaskName(toDoListCopy3[i])) && toDoList[i].contains(" ✅") && toDoListCopy3[i].contains(" ✅")) {
+                    isAlreadyOrganized = true;
+                } else if (getTaskName(toDoList[i]).equals(getTaskName(toDoListCopy3[i])) && !toDoList[i].contains(" ✅") && !toDoListCopy3[i].contains(" ✅")) {
+                    isAlreadyOrganized = true;
+                } else {
+                    isAlreadyOrganized = false;
+                    break;
+                }
+            }
+        }
+        if (isAlreadyOrganized) {
+            System.out.println("\n\u001b[38;5;9mThe ToDoList is already organized by completed and uncompleted!\u001b[0m");
+        } else {
+            showToDoList(toDoList, "Updated ToDoList");
+        }
     }
 
     public static void removeAllTasksSetAsCompleted(String[] toDoList, ArrayList<String> deletedTasks) {
@@ -535,14 +571,19 @@ public class ToDoList {
     }
 
     public static void organizeList(String[] toDoList) {
-        String[] toDoListCopy =new String[toDoList.length];
-        int counter=0;
+        String[] toDoListCopy = new String[toDoList.length];
+        int counter = 0;
         for (int i = 0; i < toDoList.length; i++) {
-            if(toDoList[i]!=null){
-                toDoListCopy[counter] =toDoList[i];
+            if (toDoList[i] != null) {
+                toDoListCopy[counter] = toDoList[i];
                 counter++;
             }
         }
         System.arraycopy(toDoListCopy, 0, toDoList, 0, toDoListCopy.length);
+    }
+
+    public static String getTaskName(String task) {
+        int indexOfClock = task.indexOf("\uD83D\uDD70");
+        return task.substring(0, indexOfClock - 1);
     }
 }
