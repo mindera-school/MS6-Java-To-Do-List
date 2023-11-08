@@ -142,7 +142,11 @@ public class ToDoList {
                     }
                 }
             }
-            System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " tasks!\n");
+            if(taskCountDisplay(toDoList)==1){
+                System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " task!\n");
+            }else{
+                System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " tasks!\n");
+            }
             displayTaskCompletionPercentage(toDoList);
             System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
         } else {
