@@ -1,5 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -13,13 +11,13 @@ public class ToDoList {
     static Timestamp timestamp;
 
     public static void main(String[] args) throws InterruptedException {
-
         start();
 
     }
 
 
     public static void start() throws InterruptedException {
+
         if (!premiumPlan) {
             System.out.println("\n                                                                  \t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\n" + "                                                                  You are currently using the Free Plan of ToDoList!\n" + "                                                                  You can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
             maxTasks = 10;
@@ -130,8 +128,8 @@ public class ToDoList {
                 }
             } catch (Exception e) {
                 System.out.println("\n\u001b[38;5;9mSomething went wrong!\nError: \u001b[0m" + e);
-                scan.next();
                 start();
+                scan.next();
             }
         } while (userChoice != 0);
     }
@@ -143,9 +141,9 @@ public class ToDoList {
             System.out.println("\u001b[38;5;8m                                                                  ------------------------------------------------\u001b[0m");
             for (int i = 0; i < tasks.size(); i++) {
                 if (tasks.get(i).done) {
-                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + tasks.get(i).description + "  🏷️ " + tasks.get(i).info + "  🕓 " + tasks.get(i).timestamp + " ✅ \u001b[0m");
+                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;40m" + tasks.get(i).description + "  🏷️ " + tasks.get(i).info + "  🕓 \u001b[0m" + tasks.get(i).timestamp + " ✅ \u001b[0m");
                 } else {
-                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + tasks.get(i).description + "  🏷️ " + tasks.get(i).info + "  🕓 " + tasks.get(i).timestamp + "\u001b[0m");
+                    System.out.println("                                                                  \u001b[38;5;7m" + (i + 1) + ".  📜 \u001b[38;5;1m" + tasks.get(i).description + "  🏷️ " + tasks.get(i).info + "  🕓 \u001b[0m" + tasks.get(i).timestamp + "\u001b[0m");
                 }
             }
             System.out.println("                                                                  \u001b[38;5;8m------------------------------------------------\u001b[0m");
@@ -156,6 +154,7 @@ public class ToDoList {
 
     public static void createTask() throws IOException {
         Scanner scan = new Scanner(System.in);
+        Task task = null;
 
         System.out.print("\n\u001b[38;5;15mCreate task: \u001b[0m");
         String userNewTask = scan.nextLine().trim();
@@ -164,12 +163,14 @@ public class ToDoList {
         timestamp = new Timestamp(System.currentTimeMillis());
 
         if (tasks.size() < 30) {
-            Task task = new Task(userNewTask, userNewInfo, timestamp);
+            task = new Task(userNewTask, userNewInfo, timestamp);
             System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + "📜 " + userNewTask + "  🏷️ " + userNewInfo + "\u001b[38;5;10m' was created!\u001b[0m");
 
         } else {
             System.out.println("\n\n\u001b[38;5;9mThe list is full! You don't have more space.\u001b[0m");
         }
+        FileManager.taskToFile(task);
+        FileManager.loadFile();
     }
 
 

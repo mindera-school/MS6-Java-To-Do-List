@@ -3,14 +3,20 @@ import org.w3c.dom.css.CSSStyleRule;
 import java.sql.Timestamp;
 
 public class Task {
-    boolean done;
     String description;
     String info;
+    boolean done;
     Timestamp timestamp;
 
+    public Task(String description, String info, boolean done, Timestamp timestamp) {
+        this.description = description;
+        this.info = info;
+        this.done = done;
+        this.timestamp = timestamp;
+        ToDoList.tasks.add(this);
+    }
 
     public Task(String description, String info, Timestamp timestamp) {
-        this.done = false;
         this.description = description;
         this.info = info;
         this.timestamp = timestamp;
