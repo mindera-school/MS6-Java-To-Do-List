@@ -214,18 +214,23 @@ public class ToDoList {
         showToDoList(toDoList, "ToDoList");
         if (count != 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to mark as completed: \u001b[0m");
-            int userChoiceOfTaskToMarkAsCompleted = scan.nextInt();
+            String userChoiceOfTaskToMarkAsCompleted = scan.next();
 
-            if (toDoList[userChoiceOfTaskToMarkAsCompleted] != null) {
-                if (toDoList[userChoiceOfTaskToMarkAsCompleted].contains(" ✅")) {
-                    System.out.println("\n\u001b[38;5;9mThat task is already marked as completed!\u001b[0m");
+            if (isANumber(userChoiceOfTaskToMarkAsCompleted.trim())) {
+                int userChoiceOfTaskToMarkAsCompletedInt = Integer.parseInt(userChoiceOfTaskToMarkAsCompleted);
+                if (toDoList[userChoiceOfTaskToMarkAsCompletedInt] != null) {
+                    if (toDoList[userChoiceOfTaskToMarkAsCompletedInt].contains(" ✅")) {
+                        System.out.println("\n\u001b[38;5;9mThat task is already marked as completed!\u001b[0m");
+                    } else {
+                        toDoList[userChoiceOfTaskToMarkAsCompletedInt] = replaceTimeOfDeletedTask(toDoList[userChoiceOfTaskToMarkAsCompletedInt]);
+                        toDoList[userChoiceOfTaskToMarkAsCompletedInt] = toDoList[userChoiceOfTaskToMarkAsCompletedInt].concat(" ✅");
+                        System.out.println("\n\u001b[38;5;10mTask successfuly marked as completed!\u001b[0m");
+                    }
                 } else {
-                    toDoList[userChoiceOfTaskToMarkAsCompleted] = replaceTimeOfDeletedTask(toDoList[userChoiceOfTaskToMarkAsCompleted]);
-                    toDoList[userChoiceOfTaskToMarkAsCompleted] = toDoList[userChoiceOfTaskToMarkAsCompleted].concat(" ✅");
-                    System.out.println("\n\u001b[38;5;10mTask successfuly marked as completed!\u001b[0m");
+                    System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
                 }
-            } else {
-                System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
+            }else{
+                System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
             }
         }
     }
@@ -488,5 +493,12 @@ public class ToDoList {
         String formattedDate = myDateObj.format(myFormatObj);
         taskToBeDeleted = taskToBeDeleted.replace(time, formattedDate);
         return taskToBeDeleted;
+    }
+
+    public static boolean isANumber(String userInput) {
+        if (userInput.matches("[0-9]") && !(userInput.matches("[^0-9]"))) {
+            return true;
+        }
+        return false;
     }
 }
