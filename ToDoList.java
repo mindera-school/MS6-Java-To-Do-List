@@ -142,9 +142,9 @@ public class ToDoList {
                     }
                 }
             }
-            if(taskCountDisplay(toDoList)==1){
+            if (taskCountDisplay(toDoList) == 1) {
                 System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " task!\n");
-            }else{
+            } else {
                 System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " tasks!\n");
             }
             displayTaskCompletionPercentage(toDoList);
@@ -177,8 +177,10 @@ public class ToDoList {
     public static void createTask(String[] toDoList) {
         Scanner scan = new Scanner(System.in);
 
-        System.out.print("\n\u001b[38;5;15mCreate task: \u001b[0m");
+        System.out.print("\n\u001b[38;5;15mType in the task name: \u001b[0m");
         String userNewTask = scan.nextLine().trim();
+        //System.out.println("\n\u001b[38;5;15mType in the task note/type nothing so it doesn't add a note: \u001b[0m");
+        //String note = scan.nextLine().trim();
 
         if (!userNewTask.isEmpty()) {
             boolean added = false;
@@ -253,9 +255,9 @@ public class ToDoList {
                 existsCompletedTasks++;
             }
         }
-        if(counter ==0){
+        if (counter == 0) {
             System.out.println("\n\u001b[38;5;9mThere are no completed tasks to remove!\u001b[0m");
-        }else{
+        } else {
             showToDoList(toDoListCompletedTasks, "Completed ToDoList Tasks");
         }
 
@@ -352,7 +354,7 @@ public class ToDoList {
                     } else {
                         System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
                     }
-                }else{
+                } else {
                     System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
                 }
             } else {
@@ -521,37 +523,41 @@ public class ToDoList {
     public static void addTaskNote(String[] toDoList) {
         Scanner scanner = new Scanner(System.in);
         showToDoList(toDoList, "ToDoList");
-        boolean isThereTaskNotes = false;
+        boolean isThereTasks = false;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
-                isThereTaskNotes = true;
+                isThereTasks = true;
                 break;
             }
         }
-        if (isThereTaskNotes) {
+        if (isThereTasks) {
             System.out.print("\nTell me the number of the task you want to add the note to: ");
             String numberOfTask = scanner.next();
             if (isANumber(numberOfTask)) {
                 int numberOfTaskInt = (Integer.parseInt(numberOfTask)) - 1;
                 boolean isNull = toDoList[numberOfTaskInt] == null;
-
-                if (!isNull) {
-                    System.out.print("\nTell me the note you would like to add: ");
-                    scanner.nextLine();
-                    String note = scanner.nextLine();
-                    if (toDoList[numberOfTaskInt].contains(" ✅")) {
-                        toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].substring(0, toDoList[numberOfTaskInt].length() - 2);
-                        toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD" + note.trim());
-                        toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" ✅");
-                        System.out.println("\n\u001b[38;5;10mNote was sucessfully added!\u001b[0m");
+                boolean isThereANote = toDoList[numberOfTaskInt].contains(" \uD83D\uDCDD");
+                System.out.println(isThereANote);
+                if (!isThereANote) {
+                    if (!isNull) {
+                        System.out.print("\nTell me the note you would like to add: ");
+                        scanner.nextLine();
+                        String note = scanner.nextLine();
+                        if (toDoList[numberOfTaskInt].contains(" ✅")) {
+                            toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].substring(0, toDoList[numberOfTaskInt].length() - 2);
+                            toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD" + note.trim());
+                            toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" ✅");
+                            System.out.println("\n\u001b[38;5;10mNote was sucessfully added!\u001b[0m");
+                        } else {
+                            toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD " + note.trim());
+                            System.out.println("\n\u001b[38;5;10mNote was sucessfully added!\u001b[0m");
+                        }
                     } else {
-                        toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD " + note.trim());
-                        System.out.println("\n\u001b[38;5;10mNote was sucessfully added!\u001b[0m");
+                        System.out.println("\n\u001b[38;5;9mThat task doesn't exist!\u001b[0m");
                     }
-                } else {
-                    System.out.println("\n\u001b[38;5;9mThat task doesn't exist!\u001b[0m");
+                }else{
+                    System.out.println("\n\u001b[38;5;9mThat task already has a note!\u001b[0m");
                 }
-
             } else {
                 System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
             }
