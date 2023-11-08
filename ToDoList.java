@@ -227,21 +227,23 @@ public class ToDoList {
             } else {
                 System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
             }
-        } else {
-            System.out.println("\n\u001b[38;5;9mYou don't have tasks!\u001b[0m");
         }
     }
 
     public static void removeTaskAsCompleted(String[] toDoList) {
         Scanner scan = new Scanner(System.in);
-
+        String[] toDoListCompletedTasks = new String[toDoList.length];
         int existsCompletedTasks = 0;
+        int counter = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
-                System.out.println(i + " - " + toDoList[i]);
+                toDoListCompletedTasks[counter] = toDoList[i];
+                counter++;
                 existsCompletedTasks++;
             }
         }
+
+        showToDoList(toDoListCompletedTasks, "Completed ToDoList Tasks");
 
         if (existsCompletedTasks > 0) {
 
@@ -254,8 +256,6 @@ public class ToDoList {
             } else {
                 System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
             }
-        } else {
-            System.out.println("\n\u001b[38;5;9mYou don't have completed tasks!\u001b[0m");
         }
     }
 
@@ -302,7 +302,7 @@ public class ToDoList {
                 existedTasks++;
             }
         }
-        showToDoList(toDoList,"ToDoList");
+        showToDoList(toDoList, "ToDoList");
 
         if (existedTasks > 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to delete: \u001b[0m");
@@ -316,8 +316,6 @@ public class ToDoList {
             } else {
                 System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
             }
-        } else {
-            System.out.println("\u001b[38;5;9mYou don't have tasks to delete!\u001b[0m");
         }
     }
 
@@ -329,7 +327,7 @@ public class ToDoList {
             }
         }
         Arrays.sort(toDoList, 0, count);
-        showToDoList(toDoList,"Updated ToDoList");
+        showToDoList(toDoList, "Updated ToDoList");
     }
 
     public static boolean upgradeToDoListPlan(String[] toDoList, boolean premium) {
@@ -381,7 +379,6 @@ public class ToDoList {
             }
         }
         showToDoList(toDoList, "Updated ToDoList");
-        System.out.println("This To Do List has " + taskCountDisplay(toDoList) + " tasks");
     }
 
     public static void removeAllTasksSetAsCompleted(String[] toDoList, ArrayList<String> deletedTasks) {
@@ -405,20 +402,22 @@ public class ToDoList {
     }
 
     public static void recoverDeletedTasks(String[] toDoList, ArrayList<String> deletedTasks) {
-        showEliminatedTasks(deletedTasks,"Eliminated Tasks");
-        System.out.println("\nChoose the one you want to recover");
-        Scanner scanner = new Scanner(System.in);
-        int userInput = scanner.nextInt();
-        if (userInput >= 0 && userInput < deletedTasks.size()) {
-            for (int i = 0; i < toDoList.length; i++) {
-                if (toDoList[i] == null) {
-                    toDoList[i] = replaceTimeOfDeletedTask(deletedTasks.get(userInput));
-                    deletedTasks.remove(userInput);
-                    break;
+        showEliminatedTasks(deletedTasks, "Eliminated Tasks");
+        if (!deletedTasks.isEmpty()) {
+            System.out.println("\nChoose the one you want to recover");
+            Scanner scanner = new Scanner(System.in);
+            int userInput = scanner.nextInt();
+            if (userInput >= 0 && userInput < deletedTasks.size()) {
+                for (int i = 0; i < toDoList.length; i++) {
+                    if (toDoList[i] == null) {
+                        toDoList[i] = replaceTimeOfDeletedTask(deletedTasks.get(userInput));
+                        deletedTasks.remove(userInput);
+                        break;
+                    }
                 }
             }
+            showToDoList(toDoList, "Updated ToDoList");
         }
-        showToDoList(toDoList, "Updated ToDoList");
     }
 
     public static int taskCountDisplay(String[] toDoList) {
@@ -434,26 +433,35 @@ public class ToDoList {
     public static void addTaskNote(String[] toDoList) {
         Scanner scanner = new Scanner(System.in);
         showToDoList(toDoList, "ToDoList");
-        System.out.print("\nTell me the number of the task you want to add the note to: ");
-        int numberOfTask = scanner.nextInt();
-        System.out.print("\nTell me the note you would like to add: ");
-        scanner.nextLine();
-        String note = scanner.nextLine();
-        boolean isNull = toDoList[numberOfTask] == null;
-
-        if (!isNull) {
-            if (toDoList[numberOfTask].contains(" ✅")) {
-                toDoList[numberOfTask] = toDoList[numberOfTask].substring(0, toDoList[numberOfTask].length() - 2);
-                toDoList[numberOfTask] = toDoList[numberOfTask].concat(" \uD83D\uDCDD" + note.trim());
-                toDoList[numberOfTask] = toDoList[numberOfTask].concat(" ✅");
-            } else {
-                toDoList[numberOfTask] = toDoList[numberOfTask].concat(" \uD83D\uDCDD " + note.trim());
+        boolean isThereTaskNotes = false;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null) {
+                isThereTaskNotes = true;
+                break;
             }
-        } else {
-            System.out.println("That task doesn't exist");
         }
+        if (isThereTaskNotes) {
+            System.out.print("\nTell me the number of the task you want to add the note to: ");
+            int numberOfTask = scanner.nextInt();
+            System.out.print("\nTell me the note you would like to add: ");
+            scanner.nextLine();
+            String note = scanner.nextLine();
+            boolean isNull = toDoList[numberOfTask] == null;
 
-        showToDoList(toDoList, "Updated ToDoList");
+            if (!isNull) {
+                if (toDoList[numberOfTask].contains(" ✅")) {
+                    toDoList[numberOfTask] = toDoList[numberOfTask].substring(0, toDoList[numberOfTask].length() - 2);
+                    toDoList[numberOfTask] = toDoList[numberOfTask].concat(" \uD83D\uDCDD" + note.trim());
+                    toDoList[numberOfTask] = toDoList[numberOfTask].concat(" ✅");
+                } else {
+                    toDoList[numberOfTask] = toDoList[numberOfTask].concat(" \uD83D\uDCDD " + note.trim());
+                }
+            } else {
+                System.out.println("That task doesn't exist");
+            }
+
+            showToDoList(toDoList, "Updated ToDoList");
+        }
     }
 
     public static void displayTaskCompletionPercentage(String[] toDoList) {
@@ -468,7 +476,9 @@ public class ToDoList {
             }
         }
         double taskCompletionPercentage = (completedCounter / toDoListLength) * 100;
-        System.out.println("The task completion percentage is " + (int) taskCompletionPercentage + "%!\n");
+        if ((int) taskCompletionPercentage != 100) {
+            System.out.println("The task completion percentage is " + (int) taskCompletionPercentage + "%!\n");
+        }
     }
 
     public static String replaceTimeOfDeletedTask(String taskToBeDeleted) {
