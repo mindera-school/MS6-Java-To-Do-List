@@ -293,11 +293,7 @@ public class ToDoList {
             int userChoiceOfTaskToDelete = scan.nextInt();
 
             if (toDoList[userChoiceOfTaskToDelete] != null) {
-                int indexOfClock = toDoList[userChoiceOfTaskToDelete].indexOf("\uD83D\uDD70");
-                String time = toDoList[userChoiceOfTaskToDelete].substring(indexOfClock+3,indexOfClock+19);
-                LocalDateTime myDateObj = LocalDateTime.now();
-                String formattedDate = myDateObj.format(myFormatObj);
-                toDoList[userChoiceOfTaskToDelete] = toDoList[userChoiceOfTaskToDelete].replace(time,formattedDate);
+                toDoList[userChoiceOfTaskToDelete] =replaceTimeOfDeletedTask(toDoList[userChoiceOfTaskToDelete]);
                 System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + toDoList[userChoiceOfTaskToDelete] + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
                 deletedTasks.add(toDoList[userChoiceOfTaskToDelete]);
                 toDoList[userChoiceOfTaskToDelete] = null;
@@ -458,5 +454,14 @@ public class ToDoList {
         }
         double taskCompletionPercentage = (completedCounter / toDoListLength) * 100;
         System.out.println("The task completion percentage is " + (int) taskCompletionPercentage + "%!\n");
+    }
+
+    public static String replaceTimeOfDeletedTask(String taskToBeDeleted){
+        int indexOfClock = taskToBeDeleted.indexOf("\uD83D\uDD70");
+        String time = taskToBeDeleted.substring(indexOfClock+3,indexOfClock+19);
+        LocalDateTime myDateObj = LocalDateTime.now();
+        String formattedDate = myDateObj.format(myFormatObj);
+        taskToBeDeleted = taskToBeDeleted.replace(time,formattedDate);
+        return taskToBeDeleted;
     }
 }
