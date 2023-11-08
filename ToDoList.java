@@ -150,6 +150,29 @@ public class ToDoList {
         }
     }
 
+    public static void showEliminatedTasks(ArrayList<String> deletedTasks, String title) {
+        if (!deletedTasks.isEmpty()) {
+            System.out.println("\n\t\t\u001b[38;5;15m" + title + "\u001b[0m");
+            System.out.println("\u001b[38;5;8m------------------------------\u001b[0m");
+            int counter = 0;
+            for (int i = 0; i < deletedTasks.size(); i++) {
+                if (deletedTasks.get(i) != null) {
+                    if (deletedTasks.get(i).contains(" ✅")) {
+                        System.out.println("\u001b[38;5;7m" + counter + ". \u001b[38;5;40m" + deletedTasks.get(i) + "\u001b[0m");
+                        counter++;
+                    } else {
+                        System.out.println("\u001b[38;5;7m" + counter + ". \u001b[38;5;1m" + deletedTasks.get(i) + "\u001b[0m");
+                        counter++;
+                    }
+                }
+            }
+            System.out.println("\nThis To Do List has " + deletedTasks.size() + " tasks!\n");
+            System.out.println("\u001b[38;5;8m------------------------------\u001b[0m");
+        } else {
+            System.out.println("\n\u001b[38;5;9mThe ToDoList is empty! You should create a task first.\u001b[0m");
+        }
+    }
+
     public static void createTask(String[] toDoList) {
         Scanner scan = new Scanner(System.in);
 
@@ -259,6 +282,7 @@ public class ToDoList {
                 int indexOfClock = toDoList[userChoiceOfTaskToEdit].indexOf("\uD83D\uDD70");
                 String oldTask = toDoList[userChoiceOfTaskToEdit].substring(0, indexOfClock - 1);
                 toDoList[userChoiceOfTaskToEdit] = toDoList[userChoiceOfTaskToEdit].replace(oldTask, userEditTask.trim());
+                toDoList[userChoiceOfTaskToEdit] = replaceTimeOfDeletedTask(toDoList[userChoiceOfTaskToEdit]);
 
                 System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTask + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask.trim() + "\u001b[38;5;10m'!");
             } else {
@@ -275,10 +299,10 @@ public class ToDoList {
         int existedTasks = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
-                System.out.println(i + " - " + toDoList[i]);
                 existedTasks++;
             }
         }
+        showToDoList(toDoList,"ToDoList");
 
         if (existedTasks > 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to delete: \u001b[0m");
@@ -305,6 +329,7 @@ public class ToDoList {
             }
         }
         Arrays.sort(toDoList, 0, count);
+        showToDoList(toDoList,"Updated ToDoList");
     }
 
     public static boolean upgradeToDoListPlan(String[] toDoList, boolean premium) {
@@ -364,6 +389,7 @@ public class ToDoList {
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
                 if (toDoList[i].contains(" ✅")) {
+                    toDoList[i] = replaceTimeOfDeletedTask(toDoList[i]);
                     deletedTasks.add(toDoList[i]);
                     toDoList[i] = null;
                     counter++;
@@ -379,17 +405,14 @@ public class ToDoList {
     }
 
     public static void recoverDeletedTasks(String[] toDoList, ArrayList<String> deletedTasks) {
-        System.out.println("\nHere are the deleted tasks!");
-        for (int i = 0; i < deletedTasks.size(); i++) {
-            System.out.println(deletedTasks.get(i));
-        }
+        showEliminatedTasks(deletedTasks,"Eliminated Tasks");
         System.out.println("\nChoose the one you want to recover");
         Scanner scanner = new Scanner(System.in);
         int userInput = scanner.nextInt();
         if (userInput >= 0 && userInput < deletedTasks.size()) {
             for (int i = 0; i < toDoList.length; i++) {
                 if (toDoList[i] == null) {
-                    toDoList[i] = deletedTasks.get(userInput);
+                    toDoList[i] = replaceTimeOfDeletedTask(deletedTasks.get(userInput));
                     deletedTasks.remove(userInput);
                     break;
                 }
