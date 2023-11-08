@@ -293,6 +293,11 @@ public class ToDoList {
             int userChoiceOfTaskToDelete = scan.nextInt();
 
             if (toDoList[userChoiceOfTaskToDelete] != null) {
+                int indexOfClock = toDoList[userChoiceOfTaskToDelete].indexOf("\uD83D\uDD70");
+                String time = toDoList[userChoiceOfTaskToDelete].substring(indexOfClock+3,indexOfClock+19);
+                LocalDateTime myDateObj = LocalDateTime.now();
+                String formattedDate = myDateObj.format(myFormatObj);
+                toDoList[userChoiceOfTaskToDelete] = toDoList[userChoiceOfTaskToDelete].replace(time,formattedDate);
                 System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + toDoList[userChoiceOfTaskToDelete] + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
                 deletedTasks.add(toDoList[userChoiceOfTaskToDelete]);
                 toDoList[userChoiceOfTaskToDelete] = null;
@@ -380,7 +385,8 @@ public class ToDoList {
         if (counter < 1) {
             System.out.println("\n\u001b[38;5;9mThere wasn't any task set as completed to remove!\u001b[0m");
         } else {
-            System.out.println("\n\u001b[38;5;10mAll tasks set as completed were removed!\u001b[0m");
+            System.out.println("\n\u001b[38;5;10mAll tasks set as completed were removed!\u001b[0m\n");
+            showToDoList(toDoList,"Updated ToDoList");
         }
     }
 
