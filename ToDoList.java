@@ -52,6 +52,7 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m11 - Recover deleted tasks\u001b[0m");
             System.out.println("\u001b[38;5;15m12 - Add task note\u001b[0m");
             System.out.print("\u001b[38;5;15mChoose an option: \u001b[0m");
+            //miraaaa
             userChoice = scan.next();
 
             scan.nextLine();
@@ -555,7 +556,7 @@ public class ToDoList {
                     } else {
                         System.out.println("\n\u001b[38;5;9mThat task doesn't exist!\u001b[0m");
                     }
-                }else{
+                } else {
                     System.out.println("\n\u001b[38;5;9mThat task already has a note!\u001b[0m");
                 }
             } else {
