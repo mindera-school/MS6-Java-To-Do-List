@@ -315,6 +315,16 @@ public class ToDoList {
                         toDoList[userChoiceOfTaskToEditInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToEditInt]);
 
                         System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTask + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask.trim() + "\u001b[38;5;10m'!");
+                    } else if(toDoList[userChoiceOfTaskToEditInt] != null && !toDoList[userChoiceOfTaskToEditInt].contains("\uD83D\uDCDD")){
+                        System.out.println("\n\u001b[38;5;15mOld: " + getTaskName(toDoList[userChoiceOfTaskToEditInt]) + "\u001b[0m");
+                        System.out.print("\u001b[38;5;15mNew: \u001b[0m");
+                        String userEditTask = scan.nextLine();
+                        int indexOfClock = toDoList[userChoiceOfTaskToEditInt].indexOf("\uD83D\uDD70");
+                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfClock- 1);
+                        toDoList[userChoiceOfTaskToEditInt] = toDoList[userChoiceOfTaskToEditInt].replace(oldTask, userEditTask.trim());
+                        toDoList[userChoiceOfTaskToEditInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToEditInt]);
+
+                        System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTask + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask.trim() + "\u001b[38;5;10m'!");
                     } else {
                         System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
                     }
