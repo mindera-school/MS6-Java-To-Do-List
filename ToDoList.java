@@ -47,7 +47,7 @@ public class ToDoList {
             System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
             System.out.println("\u001b[38;5;15m7 - Organize alphabetically\u001b[0m");
             System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
-            System.out.println("\u001b[38;5;15m9 - Organize by completed and uncompleted\u001b[0m");
+            System.out.println("\u001b[38;5;15m9 - Organize by completed\u001b[0m");
             System.out.println("\u001b[38;5;15m10 - Remove all tasks set as completed\u001b[0m");
             System.out.println("\u001b[38;5;15m11 - Recover deleted tasks\u001b[0m");
             System.out.println("\u001b[38;5;15m12 - Add task note\u001b[0m");
@@ -259,7 +259,7 @@ public class ToDoList {
         if (counter == 0) {
             System.out.println("\n\u001b[38;5;9mThere are no completed tasks to remove!\u001b[0m");
         } else {
-            showToDoList(toDoListCompletedTasks, "Completed ToDoList Tasks");
+            showToDoList(toDoList, "ToDoList");
         }
 
         if (existsCompletedTasks > 0) {
@@ -270,10 +270,15 @@ public class ToDoList {
                 int userChoiceOfTaskToRemoveAsCompletedInt = (Integer.parseInt(userChoiceOfTaskToRemoveAsCompleted)) - 1;
 
                 if (userChoiceOfTaskToRemoveAsCompletedInt >= 0 && userChoiceOfTaskToRemoveAsCompletedInt <= toDoList.length) {
+
                     if (toDoList[userChoiceOfTaskToRemoveAsCompletedInt] != null) {
-                        toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToRemoveAsCompletedInt]);
-                        toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = toDoList[userChoiceOfTaskToRemoveAsCompletedInt].replace(" ✅", "");
-                        System.out.println("\n\u001b[38;5;10mTask successfuly removed as completed!\u001b[0m");
+                        if(toDoList[userChoiceOfTaskToRemoveAsCompletedInt].contains("✅")){
+                            toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToRemoveAsCompletedInt]);
+                            toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = toDoList[userChoiceOfTaskToRemoveAsCompletedInt].replace(" ✅", "");
+                            System.out.println("\n\u001b[38;5;10mTask successfuly removed as completed!\u001b[0m");
+                        }else{
+                            System.out.println("\n\u001b[38;5;9mSelected task wasn't completed!\u001b[0m");
+                        }
                     } else {
                         System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
                     }
