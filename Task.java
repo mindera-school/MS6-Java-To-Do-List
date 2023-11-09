@@ -1,5 +1,3 @@
-import org.w3c.dom.css.CSSStyleRule;
-
 import java.sql.Timestamp;
 
 public class Task {

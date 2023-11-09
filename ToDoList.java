@@ -169,8 +169,8 @@ public class ToDoList {
         } else {
             System.out.println("\n\n\u001b[38;5;9mThe list is full! You don't have more space.\u001b[0m");
         }
-        FileManager.taskToFile(task);
-        FileManager.loadFile();
+      //  FileManager.taskToFile(task);
+      //  FileManager.loadFile();
     }
 
 
