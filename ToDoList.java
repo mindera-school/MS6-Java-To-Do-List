@@ -272,11 +272,11 @@ public class ToDoList {
                 if (userChoiceOfTaskToRemoveAsCompletedInt >= 0 && userChoiceOfTaskToRemoveAsCompletedInt <= toDoList.length) {
 
                     if (toDoList[userChoiceOfTaskToRemoveAsCompletedInt] != null) {
-                        if(toDoList[userChoiceOfTaskToRemoveAsCompletedInt].contains("✅")){
+                        if (toDoList[userChoiceOfTaskToRemoveAsCompletedInt].contains("✅")) {
                             toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToRemoveAsCompletedInt]);
                             toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = toDoList[userChoiceOfTaskToRemoveAsCompletedInt].replace(" ✅", "");
                             System.out.println("\n\u001b[38;5;10mTask successfuly removed as completed!\u001b[0m");
-                        }else{
+                        } else {
                             System.out.println("\n\u001b[38;5;9mSelected task wasn't completed!\u001b[0m");
                         }
                     } else {
@@ -315,17 +315,17 @@ public class ToDoList {
                         System.out.print("\u001b[38;5;15mNew Name: \u001b[0m");
                         String userEditTask = scan.nextLine();
                         int indexOfNote = toDoList[userChoiceOfTaskToEditInt].indexOf("\uD83D\uDCDD");
-                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfNote- 1);
+                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfNote - 1);
                         toDoList[userChoiceOfTaskToEditInt] = toDoList[userChoiceOfTaskToEditInt].replace(oldTask, userEditTask.trim());
                         toDoList[userChoiceOfTaskToEditInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToEditInt]);
 
                         System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTask + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask.trim() + "\u001b[38;5;10m'!");
-                    } else if(toDoList[userChoiceOfTaskToEditInt] != null && !toDoList[userChoiceOfTaskToEditInt].contains("\uD83D\uDCDD")){
+                    } else if (toDoList[userChoiceOfTaskToEditInt] != null && !toDoList[userChoiceOfTaskToEditInt].contains("\uD83D\uDCDD")) {
                         System.out.println("\n\u001b[38;5;15mOld Name: " + getTaskName(toDoList[userChoiceOfTaskToEditInt]) + "\u001b[0m");
                         System.out.print("\u001b[38;5;15mNew Name: \u001b[0m");
                         String userEditTask = scan.nextLine();
                         int indexOfClock = toDoList[userChoiceOfTaskToEditInt].indexOf("\uD83D\uDD70");
-                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfClock- 1);
+                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfClock - 1);
                         toDoList[userChoiceOfTaskToEditInt] = toDoList[userChoiceOfTaskToEditInt].replace(oldTask, userEditTask.trim());
                         toDoList[userChoiceOfTaskToEditInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToEditInt]);
 
@@ -563,12 +563,12 @@ public class ToDoList {
                             //toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].substring(0, toDoList[numberOfTaskInt].length() - 2);
                             int indexOfClock = toDoList[numberOfTaskInt].indexOf("\uD83D\uDD70");
                             int indexOfCheckMark = toDoList[numberOfTaskInt].indexOf(" ✅");
-                            toDoList[numberOfTaskInt]=replaceTimeOfTask(toDoList[numberOfTaskInt]);
+                            toDoList[numberOfTaskInt] = replaceTimeOfTask(toDoList[numberOfTaskInt]);
                             //System.out.println(toDoList[numberOfTaskInt]);
                             String time = toDoList[numberOfTaskInt].substring(indexOfClock, indexOfClock + 18);
                             //String time = toDoList[numberOfTaskInt].substring(indexOfClock, indexOfCheckMark - 1);
                             toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].substring(0, indexOfClock - 1);
-                            toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD" + note.trim()+ " ");
+                            toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD" + note.trim() + " ");
                             toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(time);
                             //toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(time);
                             toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" ✅");
@@ -576,7 +576,7 @@ public class ToDoList {
                         } else {
                             int indexOfClock = toDoList[numberOfTaskInt].indexOf("\uD83D\uDD70");
                             //String time = toDoList[numberOfTaskInt].substring(indexOfClock);
-                            toDoList[numberOfTaskInt]=replaceTimeOfTask(toDoList[numberOfTaskInt]);
+                            toDoList[numberOfTaskInt] = replaceTimeOfTask(toDoList[numberOfTaskInt]);
                             String time = toDoList[numberOfTaskInt].substring(indexOfClock, indexOfClock + 18);
                             toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].substring(0, indexOfClock - 1);
                             toDoList[numberOfTaskInt] = toDoList[numberOfTaskInt].concat(" \uD83D\uDCDD" + note.trim() + " ");
@@ -617,7 +617,7 @@ public class ToDoList {
 
     public static String replaceTimeOfTask(String task) {
         int indexOfClock = task.indexOf("\uD83D\uDD70");
-        String time = task.substring(indexOfClock+2, indexOfClock + 18);
+        String time = task.substring(indexOfClock + 2, indexOfClock + 18);
         LocalDateTime myDateObj = LocalDateTime.now();
         String formattedDate = myDateObj.format(myFormatObj);
         task = task.replace(time, formattedDate);
