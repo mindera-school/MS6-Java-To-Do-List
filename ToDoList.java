@@ -121,38 +121,42 @@ public class ToDoList {
 
     public static void showToDoList(String[] toDoList, String title) {
 
-        int count = 0;
-        for (int i = 0; i < toDoList.length; i++) {
-            if (toDoList[i] != null) {
-                count++;
-            }
-        }
+        int count = taskCountDisplay(toDoList);
 
         if (count > 0) {
-            System.out.println("\n\t\t\u001b[38;5;15m" + title + "\u001b[0m");
-            System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
-            int counter = 0;
+            printTitleAndSeparator(title);
+
             for (int i = 0; i < toDoList.length; i++) {
                 if (toDoList[i] != null) {
-                    if (toDoList[i].contains(" ✅")) {
-                        System.out.println("\u001b[38;5;7m" + (i + 1) + ". \u001b[38;5;40m" + toDoList[i] + "\u001b[0m");
-                        counter++;
-                    } else {
-                        System.out.println("\u001b[38;5;7m" + (i + 1) + ". \u001b[38;5;1m" + toDoList[i] + "\u001b[0m");
-                        counter++;
-                    }
+                    printTask(i, toDoList[i]);
                 }
             }
-            if (taskCountDisplay(toDoList) == 1) {
-                System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " task!\n");
-            } else {
-                System.out.println("\nThis To Do List has " + taskCountDisplay(toDoList) + " tasks!\n");
-            }
-            displayTaskCompletionPercentage(toDoList);
-            System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
+
+            printTaskCountMessage(count);
+            printTaskCompletionPercentage(toDoList);
+            printSeparator();
         } else {
             System.out.println("\n\u001b[38;5;9mThe ToDoList is empty! You should create a task first.\u001b[0m");
         }
+    }
+
+    private static void printTitleAndSeparator(String title) {
+        System.out.println("\n\t\t\u001b[38;5;15m" + title + "\u001b[0m");
+        System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
+    }
+
+    private static void printTask(int index, String task) {
+        String colorCode = task.contains(" ✅") ? "40" : "1";
+        System.out.println("\u001b[38;5;7m" + (index + 1) + ". \u001b[38;5;" + colorCode + "m" + task + "\u001b[0m");
+    }
+
+    private static void printTaskCountMessage(int count) {
+        String taskOrTasks = (count == 1) ? "task" : "tasks";
+        System.out.println("\nThis To Do List has " + count + " " + taskOrTasks + "!\n");
+    }
+
+    private static void printSeparator() {
+        System.out.println("\u001b[38;5;8m------------------------\u001b[0m");
     }
 
     public static void showEliminatedTasks(ArrayList<String> deletedTasks, String title) {
@@ -598,7 +602,7 @@ public class ToDoList {
         }
     }
 
-    public static void displayTaskCompletionPercentage(String[] toDoList) {
+    public static void printTaskCompletionPercentage(String[] toDoList) {
         double completedCounter = 0;
         double toDoListLength = 0;
         for (int i = 0; i < toDoList.length; i++) {
