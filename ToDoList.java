@@ -8,6 +8,13 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class ToDoList {
+
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_BRIGHT_WHITE = "\u001B[97;1m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String EMOJI_NOTEBOOK = "\uD83D\uDD70";
+
     static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     public static void main(String[] args) {
@@ -177,31 +184,29 @@ public class ToDoList {
     public static void createTask(String[] toDoList) {
         Scanner scan = new Scanner(System.in);
 
-        System.out.print("\n\u001b[38;5;15mType in the task name: \u001b[0m");
+        System.out.print("\n" + ANSI_BRIGHT_WHITE + "Type in the task name: " + ANSI_RESET);
         String userNewTask = scan.nextLine().trim();
-        //System.out.println("\n\u001b[38;5;15mType in the task note/type nothing so it doesn't add a note: \u001b[0m");
-        //String note = scan.nextLine().trim();
 
         if (!userNewTask.isEmpty()) {
             boolean added = false;
 
             for (int i = 0; i < toDoList.length; i++) {
                 if (toDoList[i] == null) {
-                    //toDoList[i] = userNewTask;
-                    System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + userNewTask + "\u001b[38;5;10m' was created!\u001b[0m");
+                    System.out.println("\n" + ANSI_GREEN + "The task '" + ANSI_BRIGHT_WHITE + userNewTask +
+                            ANSI_GREEN + "' was created!" + ANSI_RESET);
                     LocalDateTime myDateObj = LocalDateTime.now();
                     String formattedDate = myDateObj.format(myFormatObj);
-                    toDoList[i] = userNewTask + " \uD83D\uDD70" + formattedDate;
+                    toDoList[i] = userNewTask + " " + EMOJI_NOTEBOOK + formattedDate;
                     added = true;
                     break;
                 }
             }
 
             if (!added) {
-                System.out.println("\n\n\u001b[38;5;9mThe list is full! You don't have more space.\u001b[0m");
+                System.out.println("\n" + ANSI_YELLOW + "Task creation failed. The to-do list is full. Consider deleting completed tasks to make space." + ANSI_RESET);
             }
         } else {
-            System.out.println("\n\n\u001b[38;5;9mTask name cannot be empty.\u001b[0m");
+            System.out.println("\n" + ANSI_YELLOW + "Task creation failed. Please enter a non-empty task name." + ANSI_RESET);
         }
     }
 
