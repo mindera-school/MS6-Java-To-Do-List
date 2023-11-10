@@ -227,23 +227,19 @@ public class ToDoList {
             if (isANumber(userChoiceOfTaskToMarkAsCompleted.trim())) {
                 int userChoiceOfTaskToMarkAsCompletedInt = (Integer.parseInt(userChoiceOfTaskToMarkAsCompleted)) - 1;
 
-                if (userChoiceOfTaskToMarkAsCompletedInt >= 0 && userChoiceOfTaskToMarkAsCompletedInt <= toDoList.length) {
-                    if (toDoList[userChoiceOfTaskToMarkAsCompletedInt] != null) {
-                        if (toDoList[userChoiceOfTaskToMarkAsCompletedInt].contains(" ✅")) {
-                            System.out.println("\n\u001b[38;5;9mThat task is already marked as completed!\u001b[0m");
-                        } else {
-                            toDoList[userChoiceOfTaskToMarkAsCompletedInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToMarkAsCompletedInt]);
-                            toDoList[userChoiceOfTaskToMarkAsCompletedInt] = toDoList[userChoiceOfTaskToMarkAsCompletedInt].concat(" ✅");
-                            System.out.println("\n\u001b[38;5;10mTask successfuly marked as completed!\u001b[0m");
-                        }
+                if (userChoiceOfTaskToMarkAsCompletedInt >= 0 && userChoiceOfTaskToMarkAsCompletedInt < toDoList.length && toDoList[userChoiceOfTaskToMarkAsCompletedInt] != null) {
+                    if (toDoList[userChoiceOfTaskToMarkAsCompletedInt].contains(" ✅")) {
+                        System.out.println("\n\u001b[38;5;9mThat task is already marked as completed!\u001b[0m");
                     } else {
-                        System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
+                        toDoList[userChoiceOfTaskToMarkAsCompletedInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToMarkAsCompletedInt]);
+                        toDoList[userChoiceOfTaskToMarkAsCompletedInt] = toDoList[userChoiceOfTaskToMarkAsCompletedInt].concat(" ✅");
+                        System.out.println("\n\u001b[38;5;10mTask successfully marked as completed!\u001b[0m");
                     }
                 } else {
-                    System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
+                    System.out.println("\n\u001b[38;5;9mInvalid task option! Please choose a valid task.\u001b[0m");
                 }
             } else {
-                System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
+                System.out.println("\n\u001b[38;5;9mInvalid input. Please enter a valid number.\u001b[0m");
             }
         }
     }
