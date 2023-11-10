@@ -272,28 +272,33 @@ public class ToDoList {
     }
 
     private static void removeCompletedTaskEmoji(String[] toDoList, String userChoice) {
-        if (isANumber(userChoice)) {
-            int userChoiceInt = Integer.parseInt(userChoice) - 1;
-
-            if (userChoiceInt >= 0 && userChoiceInt < toDoList.length) {
-
-                if (toDoList[userChoiceInt] != null) {
-                    if (toDoList[userChoiceInt].contains(" ✅")) {
-                        toDoList[userChoiceInt] = replaceTimeOfTask(toDoList[userChoiceInt]);
-                        toDoList[userChoiceInt] = toDoList[userChoiceInt].replace(" ✅", "");
-                        System.out.println("\n\u001b[38;5;10mTask successfully removed as completed!\u001b[0m");
-                    } else {
-                        System.out.println("\n\u001b[38;5;9mSelected task wasn't completed!\u001b[0m");
-                    }
-                } else {
-                    invalidTaskOption();
-                }
-            } else {
-                invalidTaskOption();
-            }
-        } else {
-            System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
+        if (!isANumber(userChoice)) {
+            System.out.println("\n\u001b[38;5;9mInvalid input. Please enter a valid number.\u001b[0m");
+            return;
         }
+
+        int userChoiceInt = Integer.parseInt(userChoice) - 1;
+
+        if (userChoiceInt < 0 || userChoiceInt >= toDoList.length || toDoList[userChoiceInt] == null) {
+            invalidTaskOption();
+            return;
+        }
+
+        if (isTaskCompleted(toDoList[userChoiceInt])) {
+            toDoList[userChoiceInt] = removeCompletedEmoji(toDoList[userChoiceInt]);
+            System.out.println("\n\u001b[38;5;10mTask successfully removed as completed!\u001b[0m");
+        } else {
+            System.out.println("\n\u001b[38;5;9mSelected task wasn't completed!\u001b[0m");
+        }
+    }
+
+    private static boolean isTaskCompleted(String task) {
+        return task.contains(" ✅");
+    }
+
+    private static String removeCompletedEmoji(String task) {
+        String taskWithoutCompletion = replaceTimeOfTask(task);
+        return taskWithoutCompletion.replace(" ✅", "");
     }
 
     private static void invalidTaskOption() {
@@ -303,45 +308,19 @@ public class ToDoList {
     public static void editTask(String[] toDoList) {
         Scanner scan = new Scanner(System.in);
 
-        int count = 0;
-        for (int i = 0; i < toDoList.length; i++) {
-            if (toDoList[i] != null) {
-                count++;
-            }
-        }
+        int taskCount = taskCountDisplay(toDoList);
 
         showToDoList(toDoList, "ToDoList");
 
-        if (count != 0) {
+        if (taskCount != 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to edit: \u001b[0m");
             String userChoiceOfTaskToEdit = scan.next();
             scan.nextLine();
             if (isANumber(userChoiceOfTaskToEdit)) {
-                int userChoiceOfTaskToEditInt = (Integer.parseInt(userChoiceOfTaskToEdit)) - 1;
-                if (userChoiceOfTaskToEditInt >= 0 && userChoiceOfTaskToEditInt <= toDoList.length) {
-                    if (toDoList[userChoiceOfTaskToEditInt] != null && toDoList[userChoiceOfTaskToEditInt].contains("\uD83D\uDCDD")) {
-                        System.out.println("\n\u001b[38;5;15mOld Name: " + getTaskName(toDoList[userChoiceOfTaskToEditInt]) + "\u001b[0m");
-                        System.out.print("\u001b[38;5;15mNew Name: \u001b[0m");
-                        String userEditTask = scan.nextLine();
-                        int indexOfNote = toDoList[userChoiceOfTaskToEditInt].indexOf("\uD83D\uDCDD");
-                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfNote - 1);
-                        toDoList[userChoiceOfTaskToEditInt] = toDoList[userChoiceOfTaskToEditInt].replace(oldTask, userEditTask.trim());
-                        toDoList[userChoiceOfTaskToEditInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToEditInt]);
+                int selectedTaskIndex = (Integer.parseInt(userChoiceOfTaskToEdit)) - 1;
 
-                        System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTask + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask.trim() + "\u001b[38;5;10m'!");
-                    } else if (toDoList[userChoiceOfTaskToEditInt] != null && !toDoList[userChoiceOfTaskToEditInt].contains("\uD83D\uDCDD")) {
-                        System.out.println("\n\u001b[38;5;15mOld Name: " + getTaskName(toDoList[userChoiceOfTaskToEditInt]) + "\u001b[0m");
-                        System.out.print("\u001b[38;5;15mNew Name: \u001b[0m");
-                        String userEditTask = scan.nextLine();
-                        int indexOfClock = toDoList[userChoiceOfTaskToEditInt].indexOf("\uD83D\uDD70");
-                        String oldTask = toDoList[userChoiceOfTaskToEditInt].substring(0, indexOfClock - 1);
-                        toDoList[userChoiceOfTaskToEditInt] = toDoList[userChoiceOfTaskToEditInt].replace(oldTask, userEditTask.trim());
-                        toDoList[userChoiceOfTaskToEditInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToEditInt]);
-
-                        System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTask + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask.trim() + "\u001b[38;5;10m'!");
-                    } else {
-                        System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
-                    }
+                if (isValidTaskIndex(selectedTaskIndex, toDoList)) {
+                    editSelectedTask(toDoList, selectedTaskIndex);
                 } else {
                     System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
                 }
@@ -351,6 +330,25 @@ public class ToDoList {
         } else {
             System.out.println("\n\u001b[38;5;9mYou don't have tasks to edit!\u001b[0m");
         }
+    }
+
+    private static void editSelectedTask(String[] toDoList, int selectedTaskIndex) {
+        Scanner scanner = new Scanner(System.in);
+        String oldTaskName = getTaskName(toDoList[selectedTaskIndex]);
+        System.out.println("\n\u001b[38;5;15mOld Name: " + oldTaskName + "\u001b[0m");
+
+        System.out.print("\u001b[38;5;15mNew Name: \u001b[0m");
+        String newTaskName = scanner.nextLine();
+
+        String updatedTask = toDoList[selectedTaskIndex].replace(oldTaskName, newTaskName.trim());
+        toDoList[selectedTaskIndex] = replaceTimeOfTask(updatedTask);
+
+        System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + oldTaskName +
+                "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + newTaskName.trim() + "\u001b[38;5;10m'!");
+    }
+
+    private static boolean isValidTaskIndex(int index, String[] toDoList) {
+        return index >= 0 && index < toDoList.length && toDoList[index] != null;
     }
 
     public static void deleteTask(String[] toDoList, ArrayList<String> deletedTasks) {
