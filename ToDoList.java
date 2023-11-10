@@ -354,31 +354,27 @@ public class ToDoList {
     public static void deleteTask(String[] toDoList, ArrayList<String> deletedTasks) {
         Scanner scan = new Scanner(System.in);
 
-        int existedTasks = 0;
-        for (int i = 0; i < toDoList.length; i++) {
-            if (toDoList[i] != null) {
-                existedTasks++;
-            }
-        }
+        int existedTasks = taskCountDisplay(toDoList);
         showToDoList(toDoList, "ToDoList");
 
         if (existedTasks > 0) {
             System.out.print("\n\u001b[38;5;15mChoose a task to delete: \u001b[0m");
             String userChoiceOfTaskToDelete = scan.next();
             if (isANumber(userChoiceOfTaskToDelete)) {
-                int userChoiceOfTaskToDeleteInt = (Integer.parseInt(userChoiceOfTaskToDelete)) - 1;
+                int userChoiceOfTaskToDeleteInt = Integer.parseInt(userChoiceOfTaskToDelete) - 1;
 
-                if (userChoiceOfTaskToDeleteInt >= 0 && userChoiceOfTaskToDeleteInt <= toDoList.length) {
+                if (isValidTaskIndex(userChoiceOfTaskToDeleteInt, toDoList)) {
                     if (toDoList[userChoiceOfTaskToDeleteInt] != null) {
                         toDoList[userChoiceOfTaskToDeleteInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToDeleteInt]);
-                        System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + getTaskName(toDoList[userChoiceOfTaskToDeleteInt]) + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
+                        String deletedTaskName = getTaskName(toDoList[userChoiceOfTaskToDeleteInt]);
+                        System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + deletedTaskName + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
                         deletedTasks.add(toDoList[userChoiceOfTaskToDeleteInt]);
                         toDoList[userChoiceOfTaskToDeleteInt] = null;
                     } else {
-                        System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
+                        System.out.println("\u001b[38;5;9mInvalid task option! The task is already deleted.\u001b[0m");
                     }
                 } else {
-                    System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
+                    System.out.println("\u001b[38;5;9mInvalid task option! Please choose a valid task number.\u001b[0m");
                 }
             } else {
                 System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
@@ -388,16 +384,12 @@ public class ToDoList {
         organizeList(toDoList);
     }
 
+
     public static void organizeAlphabetically(String[] toDoList) {
-        int count = 0;
         String[] toDoListCopy1 = new String[toDoList.length];
         System.arraycopy(toDoList, 0, toDoListCopy1, 0, toDoListCopy1.length);
-        for (int i = 0; i < toDoList.length; i++) {
-            if (toDoList[i] != null) {
-                count++;
-            }
-        }
-        Arrays.sort(toDoList, 0, count);
+
+        Arrays.sort(toDoList, 0, taskCountDisplay(toDoList));
         boolean isAlreadyOrganized = false;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
