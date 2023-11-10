@@ -161,19 +161,14 @@ public class ToDoList {
 
     public static void showEliminatedTasks(ArrayList<String> deletedTasks, String title) {
         if (!deletedTasks.isEmpty()) {
-            System.out.println("\n\t\t\u001b[38;5;15m" + title + "\u001b[0m");
-            System.out.println("\u001b[38;5;8m------------------------------\u001b[0m");
+            printTitleAndSeparator(title);
             for (int i = 0; i < deletedTasks.size(); i++) {
                 if (deletedTasks.get(i) != null) {
-                    if (deletedTasks.get(i).contains(" ✅")) {
-                        System.out.println("\u001b[38;5;7m" + (i + 1) + ". \u001b[38;5;40m" + deletedTasks.get(i) + "\u001b[0m");
-                    } else {
-                        System.out.println("\u001b[38;5;7m" + (i + 1) + ". \u001b[38;5;1m" + deletedTasks.get(i) + "\u001b[0m");
-                    }
+                    printTask(i, deletedTasks.get(i));
                 }
             }
-            System.out.println("\nThis To Do List has " + deletedTasks.size() + " tasks!\n");
-            System.out.println("\u001b[38;5;8m------------------------------\u001b[0m");
+            printTaskCountMessage(deletedTasks.size());
+            printSeparator();
         } else {
             System.out.println("\n\u001b[38;5;9mThe ToDoList is empty! You should create a task first.\u001b[0m");
         }
