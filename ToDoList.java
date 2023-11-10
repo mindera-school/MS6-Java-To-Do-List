@@ -246,49 +246,58 @@ public class ToDoList {
 
     public static void removeTaskAsCompleted(String[] toDoList) {
         Scanner scan = new Scanner(System.in);
-        String[] toDoListCompletedTasks = new String[toDoList.length];
-        int existsCompletedTasks = 0;
-        int counter = 0;
-        for (int i = 0; i < toDoList.length; i++) {
-            if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
-                toDoListCompletedTasks[counter] = toDoList[i];
-                counter++;
-                existsCompletedTasks++;
-            }
-        }
-        if (counter == 0) {
+
+        int existsCompletedTasks = countCompletedTasks(toDoList);
+
+        if (existsCompletedTasks == 0) {
             System.out.println("\n\u001b[38;5;9mThere are no completed tasks to remove!\u001b[0m");
         } else {
             showToDoList(toDoList, "ToDoList");
-        }
-
-        if (existsCompletedTasks > 0) {
 
             System.out.print("\n\u001b[38;5;15mChoose a task to remove as completed: \u001b[0m");
-            String userChoiceOfTaskToRemoveAsCompleted = scan.next();
-            if (isANumber(userChoiceOfTaskToRemoveAsCompleted)) {
-                int userChoiceOfTaskToRemoveAsCompletedInt = (Integer.parseInt(userChoiceOfTaskToRemoveAsCompleted)) - 1;
+            String userChoiceOfTaskToRemoveAsCompleted = scan.nextLine();
 
-                if (userChoiceOfTaskToRemoveAsCompletedInt >= 0 && userChoiceOfTaskToRemoveAsCompletedInt <= toDoList.length) {
+            removeCompletedTaskEmoji(toDoList, userChoiceOfTaskToRemoveAsCompleted);
+        }
+    }
 
-                    if (toDoList[userChoiceOfTaskToRemoveAsCompletedInt] != null) {
-                        if (toDoList[userChoiceOfTaskToRemoveAsCompletedInt].contains("✅")) {
-                            toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = replaceTimeOfTask(toDoList[userChoiceOfTaskToRemoveAsCompletedInt]);
-                            toDoList[userChoiceOfTaskToRemoveAsCompletedInt] = toDoList[userChoiceOfTaskToRemoveAsCompletedInt].replace(" ✅", "");
-                            System.out.println("\n\u001b[38;5;10mTask successfuly removed as completed!\u001b[0m");
-                        } else {
-                            System.out.println("\n\u001b[38;5;9mSelected task wasn't completed!\u001b[0m");
-                        }
-                    } else {
-                        System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
-                    }
-                } else {
-                    System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
-                }
-            } else {
-                System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
+    private static int countCompletedTasks(String[] toDoList) {
+        int existsCompletedTasks = 0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
+                existsCompletedTasks++;
             }
         }
+        return existsCompletedTasks;
+    }
+
+    private static void removeCompletedTaskEmoji(String[] toDoList, String userChoice) {
+        if (isANumber(userChoice)) {
+            int userChoiceInt = Integer.parseInt(userChoice) - 1;
+
+            if (userChoiceInt >= 0 && userChoiceInt < toDoList.length) {
+
+                if (toDoList[userChoiceInt] != null) {
+                    if (toDoList[userChoiceInt].contains(" ✅")) {
+                        toDoList[userChoiceInt] = replaceTimeOfTask(toDoList[userChoiceInt]);
+                        toDoList[userChoiceInt] = toDoList[userChoiceInt].replace(" ✅", "");
+                        System.out.println("\n\u001b[38;5;10mTask successfully removed as completed!\u001b[0m");
+                    } else {
+                        System.out.println("\n\u001b[38;5;9mSelected task wasn't completed!\u001b[0m");
+                    }
+                } else {
+                    invalidTaskOption();
+                }
+            } else {
+                invalidTaskOption();
+            }
+        } else {
+            System.out.println("\n\u001b[38;5;9mPlease write one number!\u001b[0m");
+        }
+    }
+
+    private static void invalidTaskOption() {
+        System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
     }
 
     public static void editTask(String[] toDoList) {
